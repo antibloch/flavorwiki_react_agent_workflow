@@ -1,0 +1,27 @@
+# sandbox built 2026-09-11T14:42:36+05:00
+# source hashes (working tree, unmodified):
+33f81ed1f58b203905d9dd10fce157ca9409fd10201bed93fb9bbccccf1c3604  funda_agent_exp.py
+8fd6aaf4f690cca84f6e6aa02903ff72272715b1d90f3f0f3fd63a7e3c6db9a6  agent_instructions.py
+fe5f9ac52792052b7ba2c781228ed116e62678c03aff9d2abdc2ca203f09c6a0  tool_prompts.py
+e064bb42e054f02d1a421a5b240bf5f2a972150ff029fa06ada4d58895a58104  plsr.py
+google-auth==2.58.0
+google-genai==2.8.0
+langchain-core==1.5.1
+langchain-google-genai==4.3.2
+langchain-openai==1.4.1
+langchain-protocol==0.0.19
+langgraph==1.2.9
+langgraph-checkpoint==4.2.0
+langgraph-prebuilt==1.1.0
+langgraph-sdk==0.4.4
+# sandbox hashes (patched):
+8fd6aaf4f690cca84f6e6aa02903ff72272715b1d90f3f0f3fd63a7e3c6db9a6  agent_instructions.py
+112c663b0aa878f014254d73626fd235fef54f71def57aab9cba062247526257  funda_agent_exp.py
+e064bb42e054f02d1a421a5b240bf5f2a972150ff029fa06ada4d58895a58104  plsr.py
+fe5f9ac52792052b7ba2c781228ed116e62678c03aff9d2abdc2ca203f09c6a0  tool_prompts.py
+# --- updated 2026-09-11T14:56:59+05:00: adapter fix A1 (prompt_cache_key gated to openai) ---
+# sandbox hashes (patched, rev2):
+8fd6aaf4f690cca84f6e6aa02903ff72272715b1d90f3f0f3fd63a7e3c6db9a6  agent_instructions.py
+9e545e025c6f4613d4d7302ca75a277b89de3ee89ba4da7aee822edc8d7273af  funda_agent_exp.py
+e064bb42e054f02d1a421a5b240bf5f2a972150ff029fa06ada4d58895a58104  plsr.py
+fe5f9ac52792052b7ba2c781228ed116e62678c03aff9d2abdc2ca203f09c6a0  tool_prompts.py

@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: gpi-db
+    environment:
+      POSTGRES_USER: gpi
+      POSTGRES_PASSWORD: gpi_local
+      POSTGRES_DB: gpi_sample_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/00-restore.sh:/docker-entrypoint-initdb.d/00-restore.sh
+      - ./db/updated_dump.sql:/docker-entrypoint-initdb.d/dump/updated_dump.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gpi -d gpi_sample_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pgdata:

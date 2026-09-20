@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "postgres-query-repair"
+version = "0.1.0"
+description = "Deterministic PostgreSQL repair, formatting, and plan validation"
+requires-python = ">=3.10"
+dependencies = [
+    "psycopg[binary]==3.3.4",
+    "python-dotenv==1.2.1",
+    "sqlfluff==4.3.0",
+    "sqlglot==30.17.0",
+]
+
+[tool.setuptools]
+py-modules = ["query_repair"]

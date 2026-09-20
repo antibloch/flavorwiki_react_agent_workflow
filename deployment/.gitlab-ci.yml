@@ -1,0 +1,89 @@
+stages:
+  - validate
+  - build
+  - deploy
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  IMAGE_REF: "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA"
+
+default:
+  interruptible: true
+
+validate:
+  stage: validate
+  image: python:3.12-slim
+  cache:
+    key:
+      files:
+        - requirements.txt
+    paths:
+      - .cache/pip/
+  before_script:
+    - python -m pip install --disable-pip-version-check -r requirements.txt
+    - python -m pip install --disable-pip-version-check "PyYAML>=6,<7"
+  script:
+    - python -m compileall -q funda_agent_exp.py api_funda_agent_exp.py agent_instructions.py tool_prompts.py scripts
+    - python -m pip check
+    - python -c "import yaml; yaml.safe_load(open('compose.yaml')); yaml.safe_load(open('compose.production.yaml')); print('Compose YAML syntax OK')"
+    - OPENAI_API_KEY=ci-placeholder DATABASE_URL=postgresql://user:pass@database.invalid/db CHARTS_STATS_EXTERNAL_ACCESS_SECRET=ci-placeholder HERBALIFE_EXTERNAL_ACCESS_SECRET=ci-placeholder-secret-at-least-32-characters python scripts/check_external_auth.py
+    - bash -n ops/deploy.sh
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH'
+
+build_image:
+  stage: build
+  image:
+    name: moby/buildkit:rootless
+    entrypoint: [""]
+  variables:
+    BUILDKITD_FLAGS: --oci-worker-no-process-sandbox
+    CACHE_IMAGE: "$CI_REGISTRY_IMAGE:build-cache"
+  before_script:
+    - mkdir -p ~/.docker
+    - REGISTRY_AUTH="$(printf '%s:%s' "$CI_REGISTRY_USER" "$CI_REGISTRY_PASSWORD" | base64 | tr -d '\n')"
+    - printf '{"auths":{"%s":{"auth":"%s"}}}\n' "$CI_REGISTRY" "$REGISTRY_AUTH" > ~/.docker/config.json
+  script:
+    - |
+      buildctl-daemonless.sh build \
+        --frontend dockerfile.v0 \
+        --local context=. \
+        --local dockerfile=. \
+        --import-cache type=registry,ref="$CACHE_IMAGE" \
+        --export-cache type=registry,ref="$CACHE_IMAGE",mode=max \
+        --output type=image,name="$IMAGE_REF",push=true
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+
+deploy_production:
+  stage: deploy
+  image: alpine:3.22
+  needs:
+    - job: validate
+    - job: build_image
+  resource_group: herbalife-agent-production
+  environment:
+    name: production
+    url: $PRODUCTION_URL
+  before_script:
+    - apk add --no-cache openssh-client
+    - eval "$(ssh-agent -s)"
+    - chmod 400 "$SSH_PRIVATE_KEY"
+    - ssh-add "$SSH_PRIVATE_KEY"
+    - install -d -m 700 ~/.ssh
+    - cp "$SSH_KNOWN_HOSTS" ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - ssh -p "$DEPLOY_PORT" "$DEPLOY_USER@$DEPLOY_HOST" "install -d -m 0750 '$DEPLOY_PATH'"
+    - scp -P "$DEPLOY_PORT" compose.production.yaml "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/compose.production.yaml.next"
+    - scp -P "$DEPLOY_PORT" ops/deploy.sh "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/deploy.sh.next"
+    - ssh -p "$DEPLOY_PORT" "$DEPLOY_USER@$DEPLOY_HOST" "mv '$DEPLOY_PATH/compose.production.yaml.next' '$DEPLOY_PATH/compose.production.yaml' && mv '$DEPLOY_PATH/deploy.sh.next' '$DEPLOY_PATH/deploy.sh' && chmod 0750 '$DEPLOY_PATH/deploy.sh'"
+    - printf '%s' "$CI_DEPLOY_PASSWORD" | ssh -p "$DEPLOY_PORT" "$DEPLOY_USER@$DEPLOY_HOST" "docker login '$CI_REGISTRY' --username '$CI_DEPLOY_USER' --password-stdin"
+    - ssh -p "$DEPLOY_PORT" "$DEPLOY_USER@$DEPLOY_HOST" "DEPLOY_PATH='$DEPLOY_PATH' '$DEPLOY_PATH/deploy.sh' '$IMAGE_REF'"
+  after_script:
+    - ssh-agent -k || true
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: manual
+  allow_failure: false

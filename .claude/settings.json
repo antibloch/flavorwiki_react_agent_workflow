@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bash .claude/skills/oracle_agent/scripts/db_up.sh)",
+      "Bash(bash .claude/skills/oracle_agent/scripts/query.sh:*)",
+      "Bash(python3 .claude/skills/oracle_agent/scripts/resolve_scope.py:*)",
+      "Bash(python3 .claude/skills/oracle_agent/scripts/stats_api.py:*)",
+      "Bash(python3 .claude/skills/oracle_agent/scripts/sql_stats.py:*)",
+      "Bash(docker compose -f /home/junaid/codework/Flavorwiki/flavorai_v2/docker-compose.yml up -d)",
+      "Bash(docker logs gpi-db:*)",
+      "Bash(docker ps:*)",
+      "Bash(python3 .claude/skills/oracle_agent/scripts/plsr_ref.py:*)",
+      "Bash(python3 .claude/skills/oracle_agent/scripts/word_cloud.py:*)",
+      "Bash(python3 .claude/skills/oracle_agent/scripts/trace_log.py:*)"
+    ]
+  }
+}

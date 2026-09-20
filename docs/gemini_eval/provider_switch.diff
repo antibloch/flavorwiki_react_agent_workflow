@@ -1,0 +1,52 @@
+--- /home/junaid/codework/Flavorwiki/flavorai_v2/final_agent_work_v5_base_2_optim3_exp/funda_agent_exp.py	2026-09-09 15:01:12.275477903 +0500
++++ funda_agent_exp.py	2026-09-11 14:56:52.000724206 +0500
+@@ -123,7 +123,9 @@
+     "CHARTS_STATS_EXTERNAL_ACCESS_SECRET",
+     "EkLwAyEKSCEwt7UtdtfnY4i3D6CYb8U+UQ7kCbDkqkI=",
+ )
+-MODEL_NAME = "gpt-5.5"
++LLM_PROVIDER = os.getenv("LLM_PROVIDER", "openai").strip().lower()
++_DEFAULT_MODELS = {"openai": "gpt-5.5", "gemini": "gemini-3.5-flash"}
++MODEL_NAME = os.getenv("LLM_MODEL", _DEFAULT_MODELS.get(LLM_PROVIDER, "gpt-5.5"))
+ MODEL_TEMPERATURE = 0.0
+ # Agent and tool limits.
+ MAX_LLM_STEPS = 12  # hard bound on LLM turns; unproductive tool loops end here
+@@ -2640,14 +2642,24 @@
+ #
+ # Every turn uses one model and one reasoning profile. Tool availability, not model identity,
+ # is the only distinction on the final step-budget turn.
+-llm = ChatOpenAI(
++if LLM_PROVIDER == "gemini":
++    # OpenAI-only tuning (reasoning_effort / use_responses_api / verbosity) is NOT forwarded.
++    from langchain_google_genai import ChatGoogleGenerativeAI
++    llm = ChatGoogleGenerativeAI(
++            model=MODEL_NAME,
++            temperature=MODEL_TEMPERATURE,
++            google_api_key=os.getenv("GOOGLE_API_KEY", ""),
++        )
++    # parallel_tool_calls is an OpenAI kwarg; Gemini decides fan-out itself.
++    model = llm.bind_tools(tools=tools)
++else:
++    llm = ChatOpenAI(
+             model=MODEL_NAME,
+             temperature=MODEL_TEMPERATURE,
+             api_key=OPENAI_API_KEY,
+             **_LLM_TUNING
+         )
+-
+-model = llm.bind_tools(tools=tools, parallel_tool_calls=True)
++    model = llm.bind_tools(tools=tools, parallel_tool_calls=True)
+ 
+ _MODEL_TIMING_LOCK = threading.Lock()
+ _ACTIVE_MODEL_STARTED: float | None = None
+@@ -3876,7 +3888,9 @@
+     else:
+         active_model = model
+ 
+-    cache_key = _conversation_prompt_cache_key(config)
++    # prompt_cache_key is an OpenAI invoke kwarg; Gemini's GenerateContentConfig
++    # rejects unknown fields, so it is not forwarded (same class as parallel_tool_calls).
++    cache_key = _conversation_prompt_cache_key(config) if LLM_PROVIDER == "openai" else None
+     invoke_options = {"prompt_cache_key": cache_key} if cache_key else {}
+     model_started = time.perf_counter()
+     with _MODEL_TIMING_LOCK:

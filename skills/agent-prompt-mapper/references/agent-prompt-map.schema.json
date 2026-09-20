@@ -1,0 +1,391 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Agent prompt map",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["instructions", "delivery_paths"],
+  "properties": {
+    "instructions": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/instruction"}
+    },
+    "delivery_paths": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/delivery_path"}
+    },
+    "coverage": {"$ref": "#/$defs/coverage"},
+    "concepts": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/concept"}
+    },
+    "workflows": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/workflow"}
+    }
+  },
+  "$defs": {
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "scope", "strategy", "included_roots", "excluded_roots", "unresolved_scopes"],
+      "properties": {
+        "status": {"enum": ["complete", "partial"]},
+        "scope": {"type": "string", "minLength": 1},
+        "strategy": {"enum": ["single-map", "shard"]},
+        "included_roots": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "excluded_roots": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "unresolved_scopes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["scope", "reason"],
+            "properties": {
+              "scope": {"type": "string", "minLength": 1},
+              "reason": {"type": "string", "minLength": 1},
+              "next_step": {"type": "string", "minLength": 1}
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "complete"}}},
+          "then": {"properties": {"unresolved_scopes": {"maxItems": 0}}}
+        }
+      ]
+    },
+    "concept": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "summary", "aliases", "facet_labels", "workflow_ids"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^concept:[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "summary": {"type": "string", "minLength": 1, "maxLength": 160},
+        "aliases": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "pattern": "^[a-z0-9][a-z0-9 ._+/-]*$"
+          }
+        },
+        "facet_labels": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          }
+        },
+        "workflow_ids": {
+          "type": "array",
+          "maxItems": 8,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^workflow:[a-z0-9]+(?:-[a-z0-9]+)*$"
+          }
+        }
+      }
+    },
+    "workflow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "summary", "entry_facets", "related_facets"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^workflow:[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "summary": {"type": "string", "minLength": 1, "maxLength": 160},
+        "entry_facets": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          }
+        },
+        "related_facets": {
+          "type": "array",
+          "maxItems": 8,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          }
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "symbol", "start_line", "end_line"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "symbol": {"type": "string", "minLength": 1},
+        "start_line": {"type": "integer", "minimum": 1},
+        "end_line": {"type": "integer", "minimum": 1}
+      }
+    },
+    "facet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "confidence", "basis"],
+      "properties": {
+        "label": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "confidence": {"enum": ["explicit", "inferred"]},
+        "basis": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": ["source_text", "symbol", "composed_from", "used_by", "delivery_path"]
+          }
+        },
+        "refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"confidence": {"const": "explicit"}}},
+          "then": {
+            "properties": {
+              "basis": {"contains": {"const": "source_text"}}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"confidence": {"const": "inferred"}}},
+          "then": {"required": ["refs"]}
+        }
+      ]
+    },
+    "workflow_role": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["workflow_id", "role", "strength", "confidence", "basis"],
+      "properties": {
+        "workflow_id": {
+          "type": "string",
+          "pattern": "^workflow:[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "role": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "maxLength": 64
+        },
+        "strength": {"enum": ["core", "supporting", "adjacent"]},
+        "confidence": {"enum": ["explicit", "inferred"]},
+        "basis": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": ["source_text", "symbol", "composed_from", "used_by", "delivery_path"]
+          }
+        },
+        "refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"confidence": {"const": "explicit"}}},
+          "then": {"properties": {"basis": {"contains": {"const": "source_text"}}}}
+        },
+        {
+          "if": {"properties": {"confidence": {"const": "inferred"}}},
+          "then": {"required": ["refs"]}
+        }
+      ]
+    },
+    "semantic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["summary", "facets", "workflow_ids"],
+      "properties": {
+        "summary": {"type": "string", "minLength": 1, "maxLength": 160},
+        "facets": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 8,
+          "items": {"$ref": "#/$defs/facet"}
+        },
+        "workflow_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^workflow:[a-z0-9]+(?:-[a-z0-9]+)*$"
+          }
+        },
+        "workflow_roles": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/workflow_role"}
+        }
+      }
+    },
+    "instruction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "source",
+        "excerpt",
+        "definition_sha256",
+        "used_by",
+        "delivered_via",
+        "condition"
+      ],
+      "properties": {
+        "id": {"type": "string", "pattern": "^instruction:.+$"},
+        "kind": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+        "source": {"$ref": "#/$defs/source"},
+        "excerpt": {"type": "string", "maxLength": 180},
+        "definition_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "used_by": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "delivered_via": {"type": "string", "minLength": 1},
+        "condition": {"type": "string", "minLength": 1},
+        "semantic": {"$ref": "#/$defs/semantic"},
+        "composed_from": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^instruction:.+$"}
+        },
+        "dynamic_content_from": {"type": "string", "minLength": 1},
+        "schema_constraints": {"type": "object"},
+        "agent_scope": {
+          "oneOf": [
+            {"type": "string", "minLength": 1},
+            {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {"type": "string", "minLength": 1}
+            }
+          ]
+        },
+        "uncertainty": {
+          "oneOf": [
+            {"type": "string", "minLength": 1},
+            {"type": "object"}
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"kind": {"const": "composed_system"}}},
+          "then": {"required": ["composed_from"]}
+        },
+        {
+          "if": {"properties": {"kind": {"const": "tool_field_description"}}},
+          "then": {"required": ["schema_constraints"]}
+        }
+      ]
+    },
+    "dynamic_builder": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["builder", "delivered_via", "condition", "content"],
+      "properties": {
+        "builder": {"type": "string", "minLength": 1},
+        "source": {"$ref": "#/$defs/source"},
+        "delivered_via": {"type": "string", "minLength": 1},
+        "condition": {"type": "string", "minLength": 1},
+        "content": {"type": "string", "minLength": 1}
+      }
+    },
+    "delivery_step": {
+      "oneOf": [
+        {"type": "string", "minLength": 1},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["source", "action"],
+          "properties": {
+            "source": {"type": "string", "minLength": 1},
+            "action": {"type": "string", "minLength": 1}
+          }
+        }
+      ]
+    },
+    "delivery_path": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "condition",
+        "branch_expressions",
+        "sink",
+        "steps",
+        "instruction_ids",
+        "dynamic_builders"
+      ],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+        "condition": {"type": "string", "minLength": 1},
+        "branch_expressions": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "sink": {"type": "string", "minLength": 1},
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/delivery_step"}
+        },
+        "instruction_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^instruction:.+$"}
+        },
+        "dynamic_builders": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/dynamic_builder"}
+        }
+      }
+    }
+  }
+}

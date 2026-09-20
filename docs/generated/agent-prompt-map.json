@@ -1,0 +1,6295 @@
+{
+ "instructions": [
+  {
+   "id": "instruction:agent_instructions.AGENT_BACKSTORY",
+   "kind": "system_fragment",
+   "source": {
+    "path": "agent_instructions.py",
+    "symbol": "AGENT_BACKSTORY",
+    "start_line": 24,
+    "end_line": 232
+   },
+   "excerpt": "GENERAL UNCLEAR-INTENT POLICY -- ASSUME, ANSWER, OFFER REFINEMENT. Apply this on every turn, whether or not a pre-fetched inventory is available. A missing detail is material on...",
+   "definition_sha256": "d8d61711bbdbcba6c1147e9e26a7eee31bb3272efd02e8fce227aac060de1dbf",
+   "used_by": [
+    "agent_instructions.AGENTS_YAML",
+    "agent_instructions.build_system_prompt"
+   ],
+   "delivered_via": "system_message",
+   "condition": "Always: composed once at import into SYSTEM_PROMPT_TEXT and sent on every model call. Placeholders resolved from SCOPE_REF, not run ids.",
+   "semantic": {
+    "summary": "The main behavioural policy: unclear-intent handling, tool routing, scope moves, and retrieval discipline.",
+    "facets": [
+     {
+      "label": "benchmarking",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "cross-survey-analysis",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "result-formatting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "scope-enforcement",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "sql-generation",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "statistical-testing",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "survey-analysis-packet",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "word-cloud",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:scope-authorization",
+     "workflow:sql-retrieval",
+     "workflow:startup-inventory",
+     "workflow:survey-benchmarking"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:scope-authorization",
+      "role": "intent-and-routing-policy",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:sql-retrieval",
+      "role": "intent-and-routing-policy",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:startup-inventory",
+      "role": "inventory-usage-policy",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:survey-benchmarking",
+      "role": "intent-and-routing-policy",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:agent_instructions.AGENT_GOAL",
+   "kind": "system_fragment",
+   "source": {
+    "path": "agent_instructions.py",
+    "symbol": "AGENT_GOAL",
+    "start_line": 21,
+    "end_line": 22
+   },
+   "excerpt": "Answer what the user asks about client_id {client_id}. Treat survey_id {survey_id} as the default scope: an ordinary question stays in that survey and does not search neighborin...",
+   "definition_sha256": "dbbc511f4b1e7ce62559b90f60b175417f4245e8d27d9fa8ee122c22f14c5986",
+   "used_by": [
+    "agent_instructions.AGENTS_YAML",
+    "agent_instructions.build_system_prompt"
+   ],
+   "delivered_via": "system_message",
+   "condition": "Always: composed once at import into SYSTEM_PROMPT_TEXT and sent on every model call. Placeholders resolved from SCOPE_REF, not run ids.",
+   "semantic": {
+    "summary": "Sets default single-survey scope, the client-isolation rule, and the one assigned-benchmark exception.",
+    "facets": [
+     {
+      "label": "benchmarking",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "cross-survey-analysis",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "scope-enforcement",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "survey-analysis-packet",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:scope-authorization",
+     "workflow:survey-benchmarking"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:scope-authorization",
+      "role": "scope-boundary-rule",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:survey-benchmarking",
+      "role": "benchmark-exception-rule",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:agent_instructions.AGENT_ROLE",
+   "kind": "system_fragment",
+   "source": {
+    "path": "agent_instructions.py",
+    "symbol": "AGENT_ROLE",
+    "start_line": 18,
+    "end_line": 19
+   },
+   "excerpt": "Current Survey Analyst",
+   "definition_sha256": "6c795af4adeb06546b504837c2faefa7ae423c32538122823375e07ee61c4dbb",
+   "used_by": [
+    "agent_instructions.AGENTS_YAML",
+    "agent_instructions.build_system_prompt"
+   ],
+   "delivered_via": "system_message",
+   "condition": "Always: composed once at import into SYSTEM_PROMPT_TEXT and sent on every model call.",
+   "semantic": {
+    "summary": "Names the agent to the model as the Current Survey Analyst; opens the system prompt.",
+    "facets": [
+     {
+      "label": "agent-identity",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:answer-formatting"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:answer-formatting",
+      "role": "agent-identity-header",
+      "strength": "adjacent",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:agent_instructions.CLUSTER_RULES",
+   "kind": "system_fragment",
+   "source": {
+    "path": "agent_instructions.py",
+    "symbol": "CLUSTER_RULES",
+    "start_line": 1717,
+    "end_line": 1800
+   },
+   "excerpt": "RESPONDENT CLUSTERS -- and only these. When cluster_rating_profiles returns, render its payload and add nothing the tool did not compute. Open with one line naming the basis: ho...",
+   "definition_sha256": "0c2ed46555704576719efc5ad184fd1ef20d256bf98303ade147a651f6a23f80",
+   "used_by": [
+    "agent_instructions.build_system_prompt"
+   ],
+   "delivered_via": "system_message",
+   "condition": "Always: composed once at import into SYSTEM_PROMPT_TEXT and sent on every model call. Appended to EXPECTED_OUTPUT inside the final-answer section, after PLSR_RULES.",
+   "semantic": {
+    "summary": "Renders cluster_rating_profiles: a fixed six-column table, names from defining attributes, k/stability disclosure, no significance.",
+    "facets": [
+     {
+      "label": "output-form-guardrail",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "persona-synthesis",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "respondent-clustering",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "result-formatting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:answer-formatting",
+     "workflow:persona-generation",
+     "workflow:respondent-clustering"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:answer-formatting",
+      "role": "cluster-output-contract",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:persona-generation",
+      "role": "cluster-persona-separation",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:respondent-clustering",
+      "role": "cluster-output-contract",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:agent_instructions.EXPECTED_OUTPUT",
+   "kind": "system_fragment",
+   "source": {
+    "path": "agent_instructions.py",
+    "symbol": "EXPECTED_OUTPUT",
+    "start_line": 237,
+    "end_line": 369
+   },
+   "excerpt": "Give answer based on the tool call outputs. Report the sample size (N) alongside any statistic. If a correlation, comparison, or test is not statistically significant (or N is s...",
+   "definition_sha256": "a8aba63af34a0ef1650ff9134516b3a725c801a0c5b57efe54bcb86741d5ede0",
+   "used_by": [
+    "agent_instructions.TASKS_YAML",
+    "agent_instructions.build_system_prompt"
+   ],
+   "delivered_via": "system_message",
+   "condition": "Always: composed once at import into SYSTEM_PROMPT_TEXT and sent on every model call. Read from TASK_CONFIG['expected_output']; heads the final-answer section.",
+   "semantic": {
+    "summary": "Final-answer contract: report N, flag non-significance, hide UUIDs, refuse program text, and allow only the two defined fences plus a shaped gpi-chart payload.",
+    "facets": [
+     {
+      "label": "chart-rendering",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "output-form-guardrail",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "persona-synthesis",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "result-formatting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "statistical-testing",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "word-cloud",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:answer-formatting",
+     "workflow:statistical-analysis"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:answer-formatting",
+      "role": "final-answer-contract",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:statistical-analysis",
+      "role": "significance-reporting-rule",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:agent_instructions.INVENTORY_PREAMBLE",
+   "kind": "user_fragment",
+   "source": {
+    "path": "agent_instructions.py",
+    "symbol": "INVENTORY_PREAMBLE",
+    "start_line": 1911,
+    "end_line": 2190
+   },
+   "excerpt": "PRE-FETCHED INVENTORY OF THIS SURVEY (plus resolved benchmark configuration; do not re-query it). Both measure sections are COLUMNAR: a `columns` header naming each position, th...",
+   "definition_sha256": "b2a9837f862721f56699891dcec8134330132c97566a6bca1bd58b5bb252c0a7",
+   "used_by": [
+    "funda_agent_exp.survey_inventory"
+   ],
+   "delivered_via": "user_message",
+   "condition": "Turn 0 only, and only when survey_inventory() returns a payload; suppressed for unavailable/not_found packets.",
+   "semantic": {
+    "summary": "Instructions for reading the pre-fetched columnar survey inventory that follows it in the user turn.",
+    "facets": [
+     {
+      "label": "benchmarking",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "cross-survey-analysis",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "result-formatting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "survey-analysis-packet",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:startup-inventory",
+     "workflow:survey-benchmarking"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:startup-inventory",
+      "role": "inventory-read-instructions",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:survey-benchmarking",
+      "role": "benchmark-context-provider",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   },
+   "dynamic_content_from": "funda_agent_exp._survey_analysis_packet_payload (survey measures and benchmark_context)"
+  },
+  {
+   "id": "instruction:agent_instructions.NESTED_RESULT_RULES",
+   "kind": "system_fragment",
+   "source": {
+    "path": "agent_instructions.py",
+    "symbol": "NESTED_RESULT_RULES",
+    "start_line": 371,
+    "end_line": 508
+   },
+   "excerpt": "ADAPTIVE HIERARCHICAL JSON RESULTS -- apply this to factual tabular material from EVERY tool: SQL rows in wide or long form, analysis packets and statistics results. The word-cl...",
+   "definition_sha256": "5206a3af914345637569799bed2b40e06e4688b30af91a8f406559a20b614537",
+   "used_by": [
+    "agent_instructions.build_system_prompt"
+   ],
+   "delivered_via": "system_message",
+   "condition": "Always: composed once at import into SYSTEM_PROMPT_TEXT and sent on every model call. Appended to EXPECTED_OUTPUT inside the final-answer section.",
+   "semantic": {
+    "summary": "Shapes factual tabular answers into adaptive hierarchical JSON result blocks.",
+    "facets": [
+     {
+      "label": "result-formatting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "statistical-testing",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "survey-analysis-packet",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:answer-formatting"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:answer-formatting",
+      "role": "nested-result-shape",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:agent_instructions.PERSONA_RULES",
+   "kind": "system_fragment",
+   "source": {
+    "path": "agent_instructions.py",
+    "symbol": "PERSONA_RULES",
+    "start_line": 1407,
+    "end_line": 1619
+   },
+   "excerpt": "PERSONA REQUESTS -- \"persona\", \"consumer persona\", \"respondent profile\" and similar requests describe the people represented in the current survey; they are not permission to wr...",
+   "definition_sha256": "113e77e0b4972b602e6ca41bc57039869cfcb8600ad94d0cf26ced91bd32be36",
+   "used_by": [
+    "agent_instructions.build_system_prompt"
+   ],
+   "delivered_via": "system_message",
+   "condition": "Always: composed once at import into SYSTEM_PROMPT_TEXT and sent on every model call. Appended to EXPECTED_OUTPUT inside the final-answer section.",
+   "semantic": {
+    "summary": "Governs persona and respondent-profile requests: required retrievals and the allowed persona shape.",
+    "facets": [
+     {
+      "label": "persona-synthesis",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "respondent-clustering",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "result-formatting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "sql-generation",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "statistical-testing",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:answer-formatting",
+     "workflow:persona-generation",
+     "workflow:respondent-clustering"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:answer-formatting",
+      "role": "persona-output-contract",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:persona-generation",
+      "role": "persona-output-contract",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:respondent-clustering",
+      "role": "cluster-persona-separation",
+      "strength": "adjacent",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:agent_instructions.PG_DIALECT_RULES",
+   "kind": "system_fragment",
+   "source": {
+    "path": "agent_instructions.py",
+    "symbol": "PG_DIALECT_RULES",
+    "start_line": 1246,
+    "end_line": 1281
+   },
+   "excerpt": "PostgreSQL rejects the following outright. The fix is given; use it. - `COUNT(DISTINCT x) OVER (...)` -- NOT SUPPORTED. Note the schema examples below use `COUNT(DISTINCT enroll...",
+   "definition_sha256": "00aa1305ab5de7e2b3108d500712b2549ee1ccbc148641523b4541a67a15dd50",
+   "used_by": [
+    "agent_instructions.build_system_prompt"
+   ],
+   "delivered_via": "system_message",
+   "condition": "Always: composed once at import into SYSTEM_PROMPT_TEXT and sent on every model call.",
+   "semantic": {
+    "summary": "PostgreSQL constructs the engine rejects, each with the rewrite to use instead.",
+    "facets": [
+     {
+      "label": "sql-dialect-rules",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "sql-generation",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:sql-retrieval"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:sql-retrieval",
+      "role": "dialect-guardrail",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:agent_instructions.PLSR_RULES",
+   "kind": "system_fragment",
+   "source": {
+    "path": "agent_instructions.py",
+    "symbol": "PLSR_RULES",
+    "start_line": 1622,
+    "end_line": 1714
+   },
+   "excerpt": "PLSR RESULTS -- and only these. When analyze_plsr returns, render its payload exactly as below and add nothing the tool did not compute. State the selected `normalization` and `...",
+   "definition_sha256": "9e90718743699ae675b1bad7d6d3db381070a9ad38b8a65291f72fc259971eeb",
+   "used_by": [
+    "agent_instructions.build_system_prompt"
+   ],
+   "delivered_via": "system_message",
+   "condition": "Always: composed once at import into SYSTEM_PROMPT_TEXT and sent on every model call. Appended to EXPECTED_OUTPUT inside the final-answer section.",
+   "semantic": {
+    "summary": "How to render analyze_plsr output: VIP ranking, the fold-aware CV table, the fold and component counts used versus requested, and the limits to state.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "plsr-analysis",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "result-formatting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:answer-formatting",
+     "workflow:statistical-analysis",
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:answer-formatting",
+      "role": "plsr-output-contract",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:statistical-analysis",
+      "role": "plsr-output-contract",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "plsr-option-repair",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:agent_instructions.PROGRESS_MEMORY_RULES",
+   "kind": "system_fragment",
+   "source": {
+    "path": "agent_instructions.py",
+    "symbol": "PROGRESS_MEMORY_RULES",
+    "start_line": 1849,
+    "end_line": 1869
+   },
+   "excerpt": "INTERNAL PROGRESS MEMORY -- tool results are the authoritative evidence. The `<progress_gathered>` block is only a compact index to that evidence; never treat a model-written pr...",
+   "definition_sha256": "9bc323d9bc239f23d0e18ec183add6317ced4b682f0ef90293890a56fc6229ab",
+   "used_by": [
+    "agent_instructions.build_system_prompt"
+   ],
+   "delivered_via": "system_message",
+   "condition": "Always: composed once at import into SYSTEM_PROMPT_TEXT and sent on every model call.",
+   "semantic": {
+    "summary": "Requires a sourced progress-delta block on every tool-following turn so evidence stays traceable.",
+    "facets": [
+     {
+      "label": "progress-memory",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "sql-generation",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:step-budget-and-progress"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:step-budget-and-progress",
+      "role": "progress-ledger-contract",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:agent_instructions.REPEATED_SQL_WARNING",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "agent_instructions.py",
+    "symbol": "REPEATED_SQL_WARNING",
+    "start_line": 2200,
+    "end_line": 2204
+   },
+   "excerpt": "[query-repeat warning: the same canonical SQL produced the same result as in the previous SQL batch (or another call in this batch). Do not run another formatting or filter vari...",
+   "definition_sha256": "9461984302d5f838038269c56d3871012678d27d1002b24aa7c8a3326959910c",
+   "used_by": [
+    "funda_agent_exp.call_tool"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "Prepended to the first SQL ToolMessage when a canonical SQL fingerprint repeats with an identical result.",
+   "semantic": {
+    "summary": "Tells the model a retrieval was duplicated and to change the data relationship instead of reformatting.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "sql-generation",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:sql-retrieval",
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:sql-retrieval",
+      "role": "repeat-detection-warning",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "repeat-detection-warning",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:agent_instructions.REPORTING_RULES",
+   "kind": "system_fragment",
+   "source": {
+    "path": "agent_instructions.py",
+    "symbol": "REPORTING_RULES",
+    "start_line": 1306,
+    "end_line": 1404
+   },
+   "excerpt": "REQUESTED-CONSTRUCT GATE -- apply this before selecting or formatting any measure. Match the construct the user named, not merely its subject or the fact that it is numeric and ...",
+   "definition_sha256": "37f4fca7a24e557c8e8e4f7e9fb47c61a9eed647be4bafd2e42683908e9df8f1",
+   "used_by": [
+    "agent_instructions.build_system_prompt"
+   ],
+   "delivered_via": "system_message",
+   "condition": "Always: composed once at import into SYSTEM_PROMPT_TEXT and sent on every model call. Appended to EXPECTED_OUTPUT inside the final-answer section.",
+   "semantic": {
+    "summary": "How to narrate statistics, bases and caveats in prose, and which suggestion an untested ranking owes.",
+    "facets": [
+     {
+      "label": "plsr-analysis",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "progress-memory",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "respondent-clustering",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "result-formatting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "statistical-testing",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:answer-formatting",
+     "workflow:statistical-analysis"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:answer-formatting",
+      "role": "narrative-reporting-rule",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:statistical-analysis",
+      "role": "significance-reporting-rule",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:agent_instructions.SCHEMA_OVERVIEW",
+   "kind": "system_fragment",
+   "source": {
+    "path": "agent_instructions.py",
+    "symbol": "SCHEMA_OVERVIEW",
+    "start_line": 526,
+    "end_line": 1192
+   },
+   "excerpt": "# FlavorAI DB Map ## 1. Purpose and scope This file remains in context on every turn. It is the analytical map: which tables answer which request, at what grain, with which deno...",
+   "definition_sha256": "4932d554087f48f146de63923fa35d9efa85f893279337f42c481786e2cd0c50",
+   "used_by": [
+    "agent_instructions.build_system_prompt"
+   ],
+   "delivered_via": "system_message",
+   "condition": "Always: composed once at import into SYSTEM_PROMPT_TEXT and sent on every model call. Placed last so the preceding instruction prefix stays prompt-cache stable.",
+   "semantic": {
+    "summary": "The FlavorAI database map: tables, joins and worked query idioms the model writes SQL against.",
+    "facets": [
+     {
+      "label": "benchmarking",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "schema-reference",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "scope-enforcement",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "sql-generation",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "statistical-testing",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:scope-authorization",
+     "workflow:sql-retrieval"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:scope-authorization",
+      "role": "schema-reference",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:sql-retrieval",
+      "role": "schema-reference",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:agent_instructions.SCOPE_REF",
+   "kind": "template_substitution",
+   "source": {
+    "path": "agent_instructions.py",
+    "symbol": "SCOPE_REF",
+    "start_line": 1202,
+    "end_line": 1206
+   },
+   "excerpt": "SCOPE_REF = { \"client_id\": \"[the client_id in the SCOPE block]\", \"organization_id\": \"[the organization_id in the SCOPE block]\", \"survey_id\": \"[the survey_id in the SCOPE block]\", }",
+   "definition_sha256": "f1198caa83fa5a9b1d453abe7e0e423cf513afa8a41cf994c1902497ca6ec9d8",
+   "used_by": [
+    "agent_instructions.build_system_prompt"
+   ],
+   "delivered_via": "system_message",
+   "condition": "Always: supplies the literal placeholder text substituted into AGENT_GOAL and AGENT_BACKSTORY.",
+   "semantic": {
+    "summary": "Placeholder values that keep run ids out of the cacheable system prefix, pointing at the SCOPE block.",
+    "facets": [
+     {
+      "label": "scope-enforcement",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:scope-authorization"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:scope-authorization",
+      "role": "scope-placeholder-source",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:agent_instructions.STEP_BUDGET_NOTICE",
+   "kind": "user_fragment",
+   "source": {
+    "path": "agent_instructions.py",
+    "symbol": "STEP_BUDGET_NOTICE",
+    "start_line": 2222,
+    "end_line": 2226
+   },
+   "excerpt": "Step budget reached - no more tool calls are available. Answer now using only the data already retrieved, and state plainly which parts you could not determine.",
+   "definition_sha256": "25e8b6fa12fc94260beb2ccfb923aa3f8dfa706d69c62ac903f0d0d196ae314c",
+   "used_by": [
+    "funda_agent_exp.call_model"
+   ],
+   "delivered_via": "user_message",
+   "condition": "Appended as a HumanMessage only when number_of_steps >= MAX_LLM_STEPS - 1, the turn invoked without tools bound.",
+   "semantic": {
+    "summary": "Final-turn notice: answer from retrieved data only and name what could not be determined.",
+    "facets": [
+     {
+      "label": "result-formatting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "step-budget",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:answer-formatting",
+     "workflow:step-budget-and-progress"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:answer-formatting",
+      "role": "budget-exhaustion-notice",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:step-budget-and-progress",
+      "role": "budget-exhaustion-notice",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:agent_instructions.WORD_CLOUD_RULES",
+   "kind": "system_fragment",
+   "source": {
+    "path": "agent_instructions.py",
+    "symbol": "WORD_CLOUD_RULES",
+    "start_line": 1803,
+    "end_line": 1846
+   },
+   "excerpt": "WORD CLOUD REQUESTS -- and only these. Emit a word cloud block when the user asks for a \"word cloud\", \"wordcloud\", \"tag cloud\", \"most common/frequent words\", or \"word frequencie...",
+   "definition_sha256": "6d36cc9bff1d3a06d51a12be501874d8f3397c62b5a8b5c51de11fabd9bb69e8",
+   "used_by": [
+    "agent_instructions.build_system_prompt"
+   ],
+   "delivered_via": "system_message",
+   "condition": "Always: composed once at import into SYSTEM_PROMPT_TEXT and sent on every model call. Appended to EXPECTED_OUTPUT inside the final-answer section.",
+   "semantic": {
+    "summary": "Restricts word-cloud emission to the generate_word_cloud tool's trusted gpi-chart word_cloud artifact.",
+    "facets": [
+     {
+      "label": "chart-rendering",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "result-formatting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "word-cloud",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:answer-formatting",
+     "workflow:word-cloud-generation"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:answer-formatting",
+      "role": "word-cloud-output-contract",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:word-cloud-generation",
+      "role": "word-cloud-output-contract",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:agent_instructions.build_system_prompt",
+   "kind": "composed_system",
+   "source": {
+    "path": "agent_instructions.py",
+    "symbol": "build_system_prompt",
+    "start_line": 1872,
+    "end_line": 1904
+   },
+   "excerpt": "def build_system_prompt() -> str: \"\"\" System prompt is a function of the agent/task configuration files only -- the per-run ids arrive in the user message (see `scoped_query`), ...",
+   "definition_sha256": "00b6d6a461ecce8e7386afa5b5b4100cdc8e9273fd2df360c3ac5bd552c2886e",
+   "used_by": [
+    "agent_instructions.SYSTEM_PROMPT_TEXT",
+    "funda_agent_exp.SYSTEM_PROMPT"
+   ],
+   "delivered_via": "system_message",
+   "condition": "Runs once at import; the result is the only system message on every model call.",
+   "semantic": {
+    "summary": "Assembles the thirteen static fragments into the single stable system prompt, schema last.",
+    "facets": [
+     {
+      "label": "agent-identity",
+      "confidence": "inferred",
+      "basis": [
+       "composed_from"
+      ],
+      "refs": [
+       "instruction:agent_instructions.AGENT_ROLE"
+      ]
+     },
+     {
+      "label": "result-formatting",
+      "confidence": "inferred",
+      "basis": [
+       "composed_from"
+      ],
+      "refs": [
+       "instruction:agent_instructions.EXPECTED_OUTPUT"
+      ]
+     },
+     {
+      "label": "schema-reference",
+      "confidence": "inferred",
+      "basis": [
+       "composed_from"
+      ],
+      "refs": [
+       "instruction:agent_instructions.SCHEMA_OVERVIEW"
+      ]
+     },
+     {
+      "label": "scope-enforcement",
+      "confidence": "inferred",
+      "basis": [
+       "composed_from"
+      ],
+      "refs": [
+       "instruction:agent_instructions.AGENT_GOAL"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:answer-formatting",
+     "workflow:scope-authorization"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:answer-formatting",
+      "role": "system-prompt-assembly",
+      "strength": "core",
+      "confidence": "inferred",
+      "basis": [
+       "composed_from"
+      ],
+      "refs": [
+       "instruction:agent_instructions.EXPECTED_OUTPUT"
+      ]
+     },
+     {
+      "workflow_id": "workflow:scope-authorization",
+      "role": "system-prompt-assembly",
+      "strength": "core",
+      "confidence": "inferred",
+      "basis": [
+       "composed_from"
+      ],
+      "refs": [
+       "instruction:agent_instructions.AGENT_GOAL"
+      ]
+     }
+    ]
+   },
+   "composed_from": [
+    "instruction:agent_instructions.AGENT_ROLE",
+    "instruction:agent_instructions.AGENT_GOAL",
+    "instruction:agent_instructions.AGENT_BACKSTORY",
+    "instruction:agent_instructions.PG_DIALECT_RULES",
+    "instruction:agent_instructions.PROGRESS_MEMORY_RULES",
+    "instruction:agent_instructions.EXPECTED_OUTPUT",
+    "instruction:agent_instructions.NESTED_RESULT_RULES",
+    "instruction:agent_instructions.REPORTING_RULES",
+    "instruction:agent_instructions.PERSONA_RULES",
+    "instruction:agent_instructions.WORD_CLOUD_RULES",
+    "instruction:agent_instructions.PLSR_RULES",
+    "instruction:agent_instructions.CLUSTER_RULES",
+    "instruction:agent_instructions.SCHEMA_OVERVIEW"
+   ]
+  },
+  {
+   "id": "instruction:agent_instructions.scoped_query",
+   "kind": "user_template",
+   "source": {
+    "path": "agent_instructions.py",
+    "symbol": "scoped_query",
+    "start_line": 1209,
+    "end_line": 1217
+   },
+   "excerpt": "def scoped_query(user_query: str, client_id: str, organization_id: str, survey_id: str) -> str: \"\"\"Put the run's ids in the user turn, after the cacheable system prefix.\"\"\" retu...",
+   "definition_sha256": "fbf11c652b5485bd5c9a2cc959882107494fb770f9cbb4c41c1bfbb0e9cdfd88",
+   "used_by": [
+    "api_funda_agent_exp._scope_text",
+    "funda_agent_exp.main"
+   ],
+   "delivered_via": "user_message",
+   "condition": "First CLI round, or a fresh API thread with resolved or explicit client/organization scope; follow-ups reuse the original scope anchor.",
+   "semantic": {
+    "summary": "User-turn template placing the run's client, organization and survey ids ahead of the question.",
+    "facets": [
+     {
+      "label": "scope-enforcement",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:scope-authorization"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:scope-authorization",
+      "role": "run-scope-injection",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   },
+   "dynamic_content_from": "CLI argparse values or API request prompt/survey_id plus explicit or resolved client/organization ids"
+  },
+  {
+   "id": "instruction:agent_instructions.scoped_query_survey_only",
+   "kind": "user_template",
+   "source": {
+    "path": "agent_instructions.py",
+    "symbol": "scoped_query_survey_only",
+    "start_line": 1224,
+    "end_line": 1238
+   },
+   "excerpt": "SCOPE (authoritative -- use this exact id in every query): survey_id; client_id / organization_id NOT AVAILABLE. Historical comparison and cross-client benchmark unavailable.",
+   "definition_sha256": "d734b7dedaa702464e7821df468bde782e10d6b7cfdf5c9ef359a39d901d07b8",
+   "used_by": [
+    "api_funda_agent_exp._scope_text"
+   ],
+   "delivered_via": "user_message",
+   "condition": "Fresh API thread when _scope_text receives no resolved client/organization scope; follow-ups reuse the original anchor.",
+   "semantic": {
+    "summary": "Degraded API scope template: binds survey_id only and explains why historical and benchmark comparisons are unavailable.",
+    "facets": [
+     {
+      "label": "scope-enforcement",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:scope-authorization"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:scope-authorization",
+      "role": "run-scope-injection",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   },
+   "dynamic_content_from": "api_funda_agent_exp._run -> _scope_text (request prompt and survey_id)"
+  },
+  {
+   "id": "instruction:agent_instructions.zero_row_streak_warning",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "agent_instructions.py",
+    "symbol": "zero_row_streak_warning",
+    "start_line": 2209,
+    "end_line": 2216
+   },
+   "excerpt": "def zero_row_streak_warning(zero_streak: int) -> str: return ( f\"[query-progress warning: {zero_streak} consecutive SQL batches returned \" \"0 rows. Stop rewriting this query. Ru...",
+   "definition_sha256": "ea511ece5bd8c59fdd4fba9b479efefa68bb543ea72bb76d3b7f0ee4b800471e",
+   "used_by": [
+    "funda_agent_exp.call_tool"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "Prepended to the first SQL ToolMessage once zero_row_streak reaches 2.",
+   "semantic": {
+    "summary": "Stops query rewriting after two empty batches and prescribes the join-key diagnostic instead.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "sql-generation",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "zero-row-diagnosis",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:sql-retrieval",
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:sql-retrieval",
+      "role": "zero-row-escalation",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "zero-row-escalation",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:funda_agent_exp.ClusterInput",
+   "kind": "tool_field_description",
+   "source": {
+    "path": "funda_agent_exp.py",
+    "symbol": "ClusterInput",
+    "start_line": 2500,
+    "end_line": 2531
+   },
+   "excerpt": "class ClusterInput(BaseModel): question_ids: list[str] = Field( ..., description=( \"Resolved UUIDs of two or more attribute-level numeric rating questions, all on the \" \"same sc...",
+   "definition_sha256": "6535615d8acd82aebf6b7b40a94df2366f9b43f7e0961a05b23d5b36224a9b3a",
+   "used_by": [
+    "funda_agent_exp.cluster_rating_profiles"
+   ],
+   "delivered_via": "tool_schema",
+   "condition": "Serialized into the cluster_rating_profiles JSON schema on every bound turn.",
+   "semantic": {
+    "summary": "Field guidance for clustering: two or more same-scale attribute questions, k defaulting to 3, overall measure kept out of the basis.",
+    "facets": [
+     {
+      "label": "respondent-clustering",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "tool-argument-guidance",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:respondent-clustering"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:respondent-clustering",
+      "role": "argument-schema",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   },
+   "schema_constraints": {
+    "k": {
+     "type": [
+      "integer",
+      "null"
+     ],
+     "default": null,
+     "minimum": 2,
+     "maximum": 8,
+     "note": "null records that the user named no count; the fit runs at 3"
+    },
+    "question_ids": {
+     "type": "array",
+     "minimum_usable_length": 2
+    },
+    "overall_question_id": {
+     "type": "string",
+     "default": "empty"
+    }
+   }
+  },
+  {
+   "id": "instruction:funda_agent_exp.InfluenceVariable",
+   "kind": "tool_field_description",
+   "source": {
+    "path": "funda_agent_exp.py",
+    "symbol": "InfluenceVariable",
+    "start_line": 1823,
+    "end_line": 1839
+   },
+   "excerpt": "class InfluenceVariable(BaseModel): question_id: str = Field(..., description=\"Resolved UUID of the survey question\") component_label: str = Field( \"\", description=( \"Exact ques...",
+   "definition_sha256": "3ec1733eeb8896053db6c178238635a201a747b4ad6cff57f42c29a405752158",
+   "used_by": [
+    "funda_agent_exp.PLSRInput"
+   ],
+   "delivered_via": "tool_schema",
+   "condition": "Nested into the analyze_plsr schema.",
+   "semantic": {
+    "summary": "PLSR's variable shape: a resolved question UUID plus an optional line-scale component label.",
+    "facets": [
+     {
+      "label": "plsr-analysis",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "tool-argument-guidance",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:statistical-analysis"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:statistical-analysis",
+      "role": "argument-schema",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   },
+   "schema_constraints": {
+    "question_id": {
+     "type": "string",
+     "required": true
+    },
+    "component_label": {
+     "type": "string",
+     "default": ""
+    }
+   }
+  },
+  {
+   "id": "instruction:funda_agent_exp.PLSRInput",
+   "kind": "tool_field_description",
+   "source": {
+    "path": "funda_agent_exp.py",
+    "symbol": "PLSRInput",
+    "start_line": 2171,
+    "end_line": 2213
+   },
+   "excerpt": "class PLSRInput(BaseModel): kpi: InfluenceVariable attributes: list[InfluenceVariable] = Field( default_factory=list, max_length=100, description=( \"Attribute questions/componen...",
+   "definition_sha256": "295bdaec2b4b3d5463b383454296c302f11fb773a6e4aa78a587f0bd47259133",
+   "used_by": [
+    "funda_agent_exp.analyze_plsr"
+   ],
+   "delivered_via": "tool_schema",
+   "condition": "Serialized into the analyze_plsr JSON schema on every bound turn.",
+   "semantic": {
+    "summary": "Field guidance for PLSR: empty attributes uses every compatible measure; cv_folds must come from the user; omitting n_components fits the default 2.",
+    "facets": [
+     {
+      "label": "plsr-analysis",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "statistical-testing",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "tool-argument-guidance",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:statistical-analysis"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:statistical-analysis",
+      "role": "argument-schema",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   },
+   "schema_constraints": {
+    "attributes": {
+     "type": "array",
+     "max_length": 100,
+     "default": "empty"
+    },
+    "n_components": {
+     "type": "integer",
+     "minimum": 1,
+     "default": 2
+    }
+   }
+  },
+  {
+   "id": "instruction:funda_agent_exp.SurveyAnalysisPacketInput",
+   "kind": "tool_field_description",
+   "source": {
+    "path": "funda_agent_exp.py",
+    "symbol": "SurveyAnalysisPacketInput",
+    "start_line": 1183,
+    "end_line": 1190
+   },
+   "excerpt": "class SurveyAnalysisPacketInput(BaseModel): survey_id: str = Field( ..., description=( \"UUID of the already-resolved current, same-client historical, or fixed \" \"benchmark surve...",
+   "definition_sha256": "f81f4d4eb26ad07abd1a7b023caa460b22fd91f376ae84d5fe132ed5e13777a8",
+   "used_by": [
+    "funda_agent_exp.get_survey_analysis_packet"
+   ],
+   "delivered_via": "tool_schema",
+   "condition": "Serialized into the get_survey_analysis_packet JSON schema on every bound turn.",
+   "semantic": {
+    "summary": "Field guidance for the packet tool: the survey UUID must already be resolved.",
+    "facets": [
+     {
+      "label": "benchmarking",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "cross-survey-analysis",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "survey-analysis-packet",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "tool-argument-guidance",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:startup-inventory",
+     "workflow:survey-benchmarking"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:startup-inventory",
+      "role": "argument-schema",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:survey-benchmarking",
+      "role": "argument-schema",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   },
+   "schema_constraints": {
+    "survey_id": {
+     "type": "string",
+     "required": true
+    }
+   }
+  },
+  {
+   "id": "instruction:funda_agent_exp.WordCloudInput",
+   "kind": "tool_field_description",
+   "source": {
+    "path": "funda_agent_exp.py",
+    "symbol": "WordCloudInput",
+    "start_line": 2715,
+    "end_line": 2729
+   },
+   "excerpt": "class WordCloudInput(BaseModel): question_id: str = Field( ..., description=\"UUID of one open-answer or multiple-open-answer question from the inventory\", ) group_by_product: bo...",
+   "definition_sha256": "a7d20ddf06dd0b21996dbee638f3a97168e7ad17b8e4d673c9f30e2da44a2410",
+   "used_by": [
+    "funda_agent_exp.generate_word_cloud"
+   ],
+   "delivered_via": "tool_schema",
+   "condition": "Serialized into the generate_word_cloud JSON schema on every bound turn.",
+   "semantic": {
+    "summary": "Field guidance for word clouds: an open-answer question id, opt-in product grouping, 30-60 terms.",
+    "facets": [
+     {
+      "label": "survey-analysis-packet",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "tool-argument-guidance",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "word-cloud",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:word-cloud-generation"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:word-cloud-generation",
+      "role": "argument-schema",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   },
+   "schema_constraints": {
+    "question_id": {
+     "type": "string",
+     "required": true
+    },
+    "group_by_product": {
+     "type": "boolean",
+     "default": false
+    },
+    "max_terms": {
+     "type": "integer",
+     "default": 50,
+     "ge": 30,
+     "le": 60
+    }
+   }
+  },
+  {
+   "id": "instruction:funda_agent_exp._base_composition_hint",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "funda_agent_exp.py",
+    "symbol": "_base_composition_hint",
+    "start_line": 958,
+    "end_line": 1001
+   },
+   "excerpt": "def _base_composition_hint(sql_query: str) -> str: \"\"\"One line splitting a respondent base the model just counted into completed / in progress. The catalog carries `respondents`...",
+   "definition_sha256": "275ce7476c1fae9f557d5e3317f697753e5816b1bc59d06b4e0eb9537be2c4c8",
+   "used_by": [
+    "funda_agent_exp.nl2sql_tool"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "A successful respondent-count query whose responded and completed bases differ.",
+   "semantic": {
+    "summary": "Discloses a split between responded and completed bases so the answer states which base it used.",
+    "facets": [
+     {
+      "label": "result-formatting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "sql-generation",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "statistical-testing",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:answer-formatting",
+     "workflow:sql-retrieval"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:answer-formatting",
+      "role": "base-disclosure",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:sql-retrieval",
+      "role": "base-disclosure",
+      "strength": "adjacent",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   },
+   "dynamic_content_from": "funda_agent_exp._base_composition_hint (per-question responded and completed counts)"
+  },
+  {
+   "id": "instruction:funda_agent_exp.analyze_plsr.unavailability",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "funda_agent_exp.py",
+    "symbol": "analyze_plsr.unavailability",
+    "start_line": 2265,
+    "end_line": 2287
+   },
+   "excerpt": "if invalid_ids: return f\"PLSR unavailable: invalid question UUID(s): {invalid_ids}.\" if not _scope_published(): return \"PLSR unavailable: the run's survey scope is not establish...",
+   "definition_sha256": "621a4bbadaeee6909b02a466b1ca78cc2b14dd444f57196e73d975af6db2411f",
+   "used_by": [
+    "funda_agent_exp.analyze_plsr"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "Invalid UUIDs, unpublished scope, a permission refusal, an over-wide attribute set, or a database failure.",
+   "semantic": {
+    "summary": "PLSR refusal and unavailability messages, including the attribute-expansion cap.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "plsr-analysis",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "scope-enforcement",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "tool-argument-guidance",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:statistical-analysis",
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:statistical-analysis",
+      "role": "unavailable-result",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "unavailable-result",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   },
+   "dynamic_content_from": "funda_agent_exp.analyze_plsr (invalid id list, exception text, expanded attribute count)"
+  },
+  {
+   "id": "instruction:funda_agent_exp.call_model.chart_withheld_notice",
+   "kind": "assistant_message_fragment",
+   "source": {
+    "path": "funda_agent_exp.py",
+    "symbol": "call_model.chart_withheld_notice",
+    "start_line": 4218,
+    "end_line": 4225
+   },
+   "excerpt": "withheld = ( \"I could not render that chart. Ask for it again, naming the measure you want \" \"on each axis, and I will rebuild it from the analysis.\" if chart_withheld else \"\" )...",
+   "definition_sha256": "d1992a6830d4535804b3ab0f247ff152f5f3043767afed08beef05c4817b5f68",
+   "used_by": [
+    "funda_agent_exp.call_model"
+   ],
+   "delivered_via": "assistant_final_message",
+   "condition": "The model emitted a chart block that _sanitize_model_chart_blocks withheld.",
+   "semantic": {
+    "summary": "Tells the reader a chart could not be rendered and how to ask for it again.",
+    "facets": [
+     {
+      "label": "chart-rendering",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "error-recovery",
+      "confidence": "inferred",
+      "basis": [
+       "delivery_path"
+      ],
+      "refs": [
+       "assistant_final_message"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:answer-formatting"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:answer-formatting",
+      "role": "chart-withheld-notice",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   },
+   "uncertainty": "Primarily user-facing. It reaches the model only when a later round replays this AIMessage through _trim_history."
+  },
+  {
+   "id": "instruction:funda_agent_exp.call_tool.artifact_validation",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "funda_agent_exp.py",
+    "symbol": "call_tool.artifact_validation",
+    "start_line": 3950,
+    "end_line": 3973
+   },
+   "excerpt": "raise ValueError(\"artifacts must be valid chart envelopes\") results[index] = text_value pca_chart_artifacts.extend(prepared_artifacts) except (KeyError, TypeError, ValueError, j...",
+   "definition_sha256": "13df2c8218baf2efa67afe968bbcc58e1cd52a3942e25ea5b14bb31eb5a8c366",
+   "used_by": [
+    "funda_agent_exp.call_tool"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "A PCA or word-cloud tool result carries an internal artifact envelope that fails validation.",
+   "semantic": {
+    "summary": "Replaces an invalid internal chart or word-cloud envelope with a plain unavailability message.",
+    "facets": [
+     {
+      "label": "chart-rendering",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "word-cloud",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:tool-error-recovery",
+     "workflow:word-cloud-generation"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "artifact-validation-guard",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:word-cloud-generation",
+      "role": "artifact-validation-guard",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:funda_agent_exp.cluster_rating_profiles.unavailability",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "funda_agent_exp.py",
+    "symbol": "cluster_rating_profiles.unavailability",
+    "start_line": 2564,
+    "end_line": 2576
+   },
+   "excerpt": "if not _scope_published(): return \"Clustering unavailable: the run's survey scope is not established.\" try: rows = _fetch_cluster_rows(requested) except PermissionError as exc:...",
+   "definition_sha256": "fd36fc9956536613d09fd4c1e368614db8a500c3f3701ab4a50283535132131a",
+   "used_by": [
+    "funda_agent_exp.cluster_rating_profiles"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "Unpublished run scope, a scope/boundary refusal from the row fetch, an unknown or same-survey violation, or a database failure.",
+   "semantic": {
+    "summary": "Clustering refusal and unavailability messages raised inside the tool rather than by a tool_prompts helper.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "respondent-clustering",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "scope-enforcement",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:respondent-clustering",
+     "workflow:scope-authorization",
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:respondent-clustering",
+      "role": "refusal-message",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:scope-authorization",
+      "role": "boundary-refusal",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "refusal-message",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   },
+   "dynamic_content_from": "funda_agent_exp.cluster_rating_profiles (exception text, question id)"
+  },
+  {
+   "id": "instruction:funda_agent_exp.nl2sql_tool.survey_boundary_refusal",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "funda_agent_exp.py",
+    "symbol": "nl2sql_tool.survey_boundary_refusal",
+    "start_line": 1046,
+    "end_line": 1057
+   },
+   "excerpt": "except SurveyBoundaryError as exc: print(f\"[sql] REFUSED by survey boundary: {exc}\") if not str(exc).startswith(\"survey id(s) outside the initial survey's client boundary\"): ret...",
+   "definition_sha256": "e7dcc21e075388c8ffafc7c2269f64022f89b171380acb33c92741fde1f0fe94",
+   "used_by": [
+    "funda_agent_exp.nl2sql_tool"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "SurveyBoundaryError from the executor; the TERMINAL variant only when the message names a cross-client boundary breach.",
+   "semantic": {
+    "summary": "Refuses an out-of-boundary query and, for cross-survey breaches, terminates the task without substitution.",
+    "facets": [
+     {
+      "label": "benchmarking",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "cross-survey-analysis",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "scope-enforcement",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "sql-generation",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:scope-authorization",
+     "workflow:sql-retrieval",
+     "workflow:survey-benchmarking"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:scope-authorization",
+      "role": "boundary-refusal",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:sql-retrieval",
+      "role": "boundary-refusal",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:survey-benchmarking",
+      "role": "boundary-refusal",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   },
+   "dynamic_content_from": "funda_agent_exp.nl2sql_tool (the SurveyBoundaryError text)"
+  },
+  {
+   "id": "instruction:funda_agent_exp.run_survey_stats.scope_refusals",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "funda_agent_exp.py",
+    "symbol": "run_survey_stats.scope_refusals",
+    "start_line": 1757,
+    "end_line": 1769
+   },
+   "excerpt": "if not _scope_published(): return \"Statistics unavailable: the run's survey scope is not established.\" question_ids = [question_id] + ([reference_question_id] if reference_quest...",
+   "definition_sha256": "c254bb7f8289b13c1395f20b0dc83e63904d6367129a14c305ce4f83a903e52d",
+   "used_by": [
+    "funda_agent_exp.run_survey_stats"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "Four branches: scope unpublished, ownership unverifiable, question outside the client boundary, or unknown ids.",
+   "semantic": {
+    "summary": "Statistics-tool refusals for unestablished scope, unverifiable ownership, out-of-boundary or unknown questions.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "scope-enforcement",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "statistical-testing",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:scope-authorization",
+     "workflow:statistical-analysis",
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:scope-authorization",
+      "role": "boundary-refusal",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:statistical-analysis",
+      "role": "boundary-refusal",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "boundary-refusal",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   },
+   "dynamic_content_from": "funda_agent_exp._authorize_question_ids (the unknown id list)"
+  },
+  {
+   "id": "instruction:funda_agent_exp.run_survey_stats.underpowered_correlations",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "funda_agent_exp.py",
+    "symbol": "_prepare_stats_response.underpowered_correlations",
+    "start_line": 1663,
+    "end_line": 1671
+   },
+   "excerpt": "(No correlation above reached its alpha. These are SEPARATE tests on product subsets, not one test of the overall relationship, and a real effect can miss alpha in every subset....",
+   "definition_sha256": "bef88520638185e700489fdc8a1511ab4f6a29e0830d67f8e658d9a8ade8ae5d",
+   "used_by": [
+    "funda_agent_exp._prepare_stats_response"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "At least two parseable correlation p-value/alpha pairs were collected, and every p-value is >= its alpha. The runtime counts pairs, not distinct products.",
+   "semantic": {
+    "summary": "States that a per-product correlation split which reaches no alpha is inconclusive, not evidence of no relationship.",
+    "facets": [
+     {
+      "label": "result-formatting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "statistical-testing",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:answer-formatting",
+     "workflow:statistical-analysis"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:answer-formatting",
+      "role": "interpretation-guard",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:statistical-analysis",
+      "role": "interpretation-guard",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.ANALYSIS_PACKET_RESULT_HEAD",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "ANALYSIS_PACKET_RESULT_HEAD",
+    "start_line": 45,
+    "end_line": 45
+   },
+   "excerpt": "ANALYSIS PACKET FOR SURVEY",
+   "definition_sha256": "0a9323ba4ae7b51aa76af2efef1ed798dacaebc36050cf688644671d01060981",
+   "used_by": [
+    "tool_prompts.analysis_packet_preamble"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "Component of analysis_packet_preamble; reaches the model only through it.",
+   "semantic": {
+    "summary": "Header line that opens a successful analysis-packet tool result.",
+    "facets": [
+     {
+      "label": "survey-analysis-packet",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:startup-inventory"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:startup-inventory",
+      "role": "result-header",
+      "strength": "adjacent",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.ANALYZE_PLSR_DESCRIPTION",
+   "kind": "tool_description",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "ANALYZE_PLSR_DESCRIPTION",
+    "start_line": 302,
+    "end_line": 349
+   },
+   "excerpt": "Run partial least squares regression from survey attributes onto one KPI. Use this ONLY when the user explicitly asks for PLSR/PLS regression, VIP scores, or partial least squar...",
+   "definition_sha256": "262ce5a3e1a81cf142140614218a4c9c77e24d778910bcde44db1e0e780f1c05",
+   "used_by": [
+    "funda_agent_exp.analyze_plsr"
+   ],
+   "delivered_via": "tool_schema",
+   "condition": "Bound on every turn except the final step-budget turn.",
+   "semantic": {
+    "summary": "Contract for partial least squares regression onto one KPI: user-chosen normalization, CV method and fold count, plus the optional component count.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "plsr-analysis",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "statistical-testing",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "survey-analysis-packet",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:statistical-analysis",
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:statistical-analysis",
+      "role": "tool-contract",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "plsr-option-repair",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.BIG_SQL_CHARS",
+   "kind": "template_substitution",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "BIG_SQL_CHARS",
+    "start_line": 518,
+    "end_line": 518
+   },
+   "excerpt": "BIG_SQL_CHARS = 2000",
+   "definition_sha256": "28dbc8f4de70061679fe6c9c3c2de1f959f08d49431f4fbe69bf406494d422a8",
+   "used_by": [
+    "tool_prompts.sql_failure"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "Component of sql_failure; the threshold above which the echoed SQL is omitted.",
+   "semantic": {
+    "summary": "Character threshold that decides whether a failing query is echoed back to the model.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "sql-generation",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "echo-threshold",
+      "strength": "adjacent",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.CLUSTER_RATING_PROFILES_DESCRIPTION",
+   "kind": "tool_description",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "CLUSTER_RATING_PROFILES_DESCRIPTION",
+    "start_line": 355,
+    "end_line": 381
+   },
+   "excerpt": "Group this survey's respondents by the SHAPE of their rating profile across several attribute questions, using k-means. Use it when the user asks to cluster, segment or group re...",
+   "definition_sha256": "7e7a0b5b9a348f22ec03d980ddce66a9307e6a4a61e61268cb8887993b38ee0b",
+   "used_by": [
+    "funda_agent_exp.cluster_rating_profiles"
+   ],
+   "delivered_via": "tool_schema",
+   "condition": "Bound on every turn except the final step-budget turn.",
+   "semantic": {
+    "summary": "Contract for k-means over attribute rating profiles: question ids in, no SQL, summary measures passed as overall_question_id.",
+    "facets": [
+     {
+      "label": "respondent-clustering",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "statistical-testing",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "tool-argument-guidance",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:respondent-clustering"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:respondent-clustering",
+      "role": "tool-contract",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.CLUSTER_RESULT_HEAD",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "CLUSTER_RESULT_HEAD",
+    "start_line": 384,
+    "end_line": 384
+   },
+   "excerpt": "RESPONDENT CLUSTERS COMPLETE",
+   "definition_sha256": "a53a3c85b5b30668d359893dda54cc90238dc844f318df4ef1f674ac2a9e8293",
+   "used_by": [
+    "funda_agent_exp.cluster_rating_profiles"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "Success path of cluster_rating_profiles, ahead of the JSON payload.",
+   "semantic": {
+    "summary": "Header opening a successful respondent-clustering result.",
+    "facets": [
+     {
+      "label": "respondent-clustering",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "result-formatting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:respondent-clustering"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:respondent-clustering",
+      "role": "result-header",
+      "strength": "adjacent",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.GENERATE_WORD_CLOUD_DESCRIPTION",
+   "kind": "tool_description",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "GENERATE_WORD_CLOUD_DESCRIPTION",
+    "start_line": 115,
+    "end_line": 131
+   },
+   "excerpt": "Build the word-cloud artifact for one resolved open-ended question. Use this tool for every word-cloud, tag-cloud, most-common-words or word-frequency request. Do not use nl2sql...",
+   "definition_sha256": "abc19f5f88b4a7b20a837a743499eae8f0a0737e84b031b960e3d6484d15f43c",
+   "used_by": [
+    "funda_agent_exp.generate_word_cloud"
+   ],
+   "delivered_via": "tool_schema",
+   "condition": "Bound on every turn except the final step-budget turn.",
+   "semantic": {
+    "summary": "Contract for building the trusted gpi-chart word_cloud artifact from one open-ended question.",
+    "facets": [
+     {
+      "label": "chart-rendering",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "scope-enforcement",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "survey-analysis-packet",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "word-cloud",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:word-cloud-generation"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:word-cloud-generation",
+      "role": "tool-contract",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.GET_SURVEY_ANALYSIS_PACKET_DESCRIPTION",
+   "kind": "tool_description",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "GET_SURVEY_ANALYSIS_PACKET_DESCRIPTION",
+    "start_line": 16,
+    "end_line": 42
+   },
+   "excerpt": "Return the complete analysis packet for one resolved survey. Use this after another survey's id has been resolved, instead of spending one SQL turn listing candidate questions a...",
+   "definition_sha256": "adbde014f1e97c24c62551e47f0b425b9c862a88ba30ad11b0d895ad4488381b",
+   "used_by": [
+    "funda_agent_exp.get_survey_analysis_packet"
+   ],
+   "delivered_via": "tool_schema",
+   "condition": "Bound on every turn except the final step-budget turn.",
+   "semantic": {
+    "summary": "Contract for fetching one resolved survey's complete analysis packet, benchmark surveys included.",
+    "facets": [
+     {
+      "label": "benchmarking",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "cross-survey-analysis",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "sql-generation",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "survey-analysis-packet",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:startup-inventory",
+     "workflow:survey-benchmarking"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:startup-inventory",
+      "role": "tool-contract",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:survey-benchmarking",
+      "role": "tool-contract",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.NL2SQL_TOOL_DESCRIPTION",
+   "kind": "tool_description",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "NL2SQL_TOOL_DESCRIPTION",
+    "start_line": 165,
+    "end_line": 282
+   },
+   "excerpt": "Run one read-only SQL query against the survey PostgreSQL database. Pass a single complete SELECT statement (CTEs are fine; no semicolon-separated batches). The transaction is r...",
+   "definition_sha256": "3e597451c9abe65384e9e75e25229a4cbbe05cd1b3afa6b05b08f41525821690",
+   "used_by": [
+    "funda_agent_exp.nl2sql_tool"
+   ],
+   "delivered_via": "tool_schema",
+   "condition": "Bound on every turn except the final step-budget turn, where llm is invoked without tools.",
+   "semantic": {
+    "summary": "The nl2sql_tool contract: one read-only SELECT, scope binding, dialect limits and result shape.",
+    "facets": [
+     {
+      "label": "benchmarking",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "cross-survey-analysis",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "result-formatting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "schema-reference",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "scope-enforcement",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "sql-dialect-rules",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "sql-generation",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:scope-authorization",
+     "workflow:sql-retrieval",
+     "workflow:survey-benchmarking"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:scope-authorization",
+      "role": "tool-contract",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:sql-retrieval",
+      "role": "tool-contract",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:survey-benchmarking",
+      "role": "tool-contract",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.NON_SELECT_RESULT",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "NON_SELECT_RESULT",
+    "start_line": 614,
+    "end_line": 616
+   },
+   "excerpt": "That statement returned no rows. This tool is read-only: use SELECT queries.",
+   "definition_sha256": "502c0adbb9d27bf1357b4ddacb09d5b8fd5429a97ce49014bb4f3485da5f9267",
+   "used_by": [
+    "funda_agent_exp.nl2sql_tool"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "The executed statement returned no result rows object.",
+   "semantic": {
+    "summary": "Reports that the statement ran but returns no rows to read.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "sql-generation",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:sql-retrieval"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:sql-retrieval",
+      "role": "empty-shape-result",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.PACKET_SCOPE_CHECK_FAILED",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "PACKET_SCOPE_CHECK_FAILED",
+    "start_line": 66,
+    "end_line": 69
+   },
+   "excerpt": "Analysis packet unavailable: survey ownership could not be verified. Do not retry with a different id; use only a survey resolved inside the current scope.",
+   "definition_sha256": "047b366c396fd3c4166a417d32dfeebec147ff338559bc0cbe0eed1d82d5f8ba",
+   "used_by": [
+    "funda_agent_exp.get_survey_analysis_packet"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "ScopeLookupUnavailable raised while authorizing the requested survey.",
+   "semantic": {
+    "summary": "Reports that survey ownership could not be verified, so the packet is refused.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "scope-enforcement",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "survey-analysis-packet",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:scope-authorization",
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:scope-authorization",
+      "role": "scope-unavailable-result",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "scope-unavailable-result",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.PACKET_SCOPE_UNAVAILABLE",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "PACKET_SCOPE_UNAVAILABLE",
+    "start_line": 61,
+    "end_line": 64
+   },
+   "excerpt": "Analysis packet unavailable: the run's survey scope is not established, so access cannot be authorized.",
+   "definition_sha256": "882b77ac0b568e6695d246d529b764e33c398fdd9c63176239de47a34b7ff5da",
+   "used_by": [
+    "funda_agent_exp.get_survey_analysis_packet"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "_scope_published() is false when the packet is requested.",
+   "semantic": {
+    "summary": "Reports that the run's survey scope is not established, so no packet can be fetched.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "scope-enforcement",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "survey-analysis-packet",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:scope-authorization",
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:scope-authorization",
+      "role": "scope-unavailable-result",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "scope-unavailable-result",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.PLSR_RESULT_HEAD",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "PLSR_RESULT_HEAD",
+    "start_line": 352,
+    "end_line": 352
+   },
+   "excerpt": "PLSR ANALYSIS COMPLETE",
+   "definition_sha256": "f7e23463b8365cf18375945082a6f4779aa6e4fcc9c24678cc42b7dd294ba0ec",
+   "used_by": [
+    "funda_agent_exp.analyze_plsr"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "Success path of analyze_plsr, ahead of the JSON payload.",
+   "semantic": {
+    "summary": "Header opening a successful PLSR result.",
+    "facets": [
+     {
+      "label": "plsr-analysis",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "result-formatting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:statistical-analysis"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:statistical-analysis",
+      "role": "result-header",
+      "strength": "adjacent",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.REJECT_BATCH",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "REJECT_BATCH",
+    "start_line": 604,
+    "end_line": 604
+   },
+   "excerpt": "pass exactly one statement -- semicolon-separated batches are not run",
+   "definition_sha256": "6aabd4d8ce678de13fb6c5e8b58b935e6098c5ba57759041a68995147de31181",
+   "used_by": [
+    "funda_agent_exp._reject_reason"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "More than one statement survives comment stripping.",
+   "semantic": {
+    "summary": "Rejection reason for semicolon-separated SQL batches.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "sql-generation",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:sql-retrieval"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:sql-retrieval",
+      "role": "query-rejection-reason",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.REJECT_NOT_SELECT",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "REJECT_NOT_SELECT",
+    "start_line": 605,
+    "end_line": 605
+   },
+   "excerpt": "pass a single read-only SELECT (or WITH ... SELECT) statement",
+   "definition_sha256": "bd9ac9c432997a6ad410e7819a502803637e2a52dba149d37bf67ffb4475ab00",
+   "used_by": [
+    "funda_agent_exp._reject_reason"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "The statement does not begin with SELECT or WITH.",
+   "semantic": {
+    "summary": "Rejection reason for non-read-only SQL.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "sql-generation",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:sql-retrieval"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:sql-retrieval",
+      "role": "query-rejection-reason",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.RUN_SURVEY_STATS_DESCRIPTION",
+   "kind": "tool_description",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "RUN_SURVEY_STATS_DESCRIPTION",
+    "start_line": 287,
+    "end_line": 299
+   },
+   "excerpt": "Run statistical tests (anova, tukey, pearson, spearman, chi-square, pca) on a survey question. question_id: a UUID from the pre-fetched inventory or an nl2sql_tool result, never...",
+   "definition_sha256": "0e42abec3f7866ad168b37c8447f4ca253eafa821b3c889286b74dc0d221d1ea",
+   "used_by": [
+    "funda_agent_exp.run_survey_stats"
+   ],
+   "delivered_via": "tool_schema",
+   "condition": "Bound on every turn except the final step-budget turn.",
+   "semantic": {
+    "summary": "Contract for anova, tukey, pearson, spearman, chi-square and pca on one survey question.",
+    "facets": [
+     {
+      "label": "chart-rendering",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "result-formatting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "statistical-testing",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "survey-analysis-packet",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:statistical-analysis"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:statistical-analysis",
+      "role": "tool-contract",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.SEMANTIC_FILTER_REASON",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "SEMANTIC_FILTER_REASON",
+    "start_line": 461,
+    "end_line": 476
+   },
+   "excerpt": "do not pattern-match question.prompt or question_option.label against the concept you are looking for (no LIKE/ILIKE/SIMILAR TO/~ on those columns) -- that decides meaning insid...",
+   "definition_sha256": "a48744efa2bc4d206af43ecbd9675ce3db571698860b9489abf25913556ca9ba",
+   "used_by": [
+    "funda_agent_exp._reject_reason"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "The SQL identifiers match _SEMANTIC_FILTER_RE; returned as the reason to multi_statement_error.",
+   "semantic": {
+    "summary": "Explains why filtering on meaning inside SQL is refused and what to retrieve instead.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "sql-generation",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "survey-analysis-packet",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:sql-retrieval",
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:sql-retrieval",
+      "role": "query-rejection-reason",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "query-rejection-reason",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.SQL_ERROR_HINTS",
+   "kind": "template_substitution",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "SQL_ERROR_HINTS",
+    "start_line": 484,
+    "end_line": 513
+   },
+   "excerpt": "SQL_ERROR_HINTS: tuple[tuple[str, str], ...] = ( (r\"DISTINCT is not implemented for window functions\", \"Postgres has no COUNT(DISTINCT x) OVER (...). Aggregate at the finer grai...",
+   "definition_sha256": "45ae5ff11b0d157d8fe44a0e16fee188fd3a8c53eae0e76818c013a5567717bf",
+   "used_by": [
+    "tool_prompts.error_hint"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "Component of error_hint; the first matching pattern supplies the hint.",
+   "semantic": {
+    "summary": "Pattern-to-fix table mapping observed PostgreSQL errors onto the concrete rewrite.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "sql-dialect-rules",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "sql-generation",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:sql-retrieval",
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:sql-retrieval",
+      "role": "error-hint-table",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "error-hint-table",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.STATS_TIMEOUT",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "STATS_TIMEOUT",
+    "start_line": 643,
+    "end_line": 643
+   },
+   "excerpt": "Error: Charts API timed out. Try again.",
+   "definition_sha256": "1dd84f01582c75e88ffa75f24198d690602cba63fca3655f5949828fd8904d1d",
+   "used_by": [
+    "funda_agent_exp.run_survey_stats"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "The Charts API request times out.",
+   "semantic": {
+    "summary": "Reports a statistics API timeout and invites one retry.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "statistical-testing",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "transport-failure",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.UNTRUSTED_WORD_CLOUD_BLOCK",
+   "kind": "assistant_message_fragment",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "UNTRUSTED_WORD_CLOUD_BLOCK",
+    "start_line": 160,
+    "end_line": 163
+   },
+   "excerpt": "A word-cloud block was withheld because it was not produced by the deterministic word-cloud tool.",
+   "definition_sha256": "c877775906d11a9d09d141df5e63eb27def10f7ac2275124deb56c087ceaa517",
+   "used_by": [
+    "funda_agent_exp.call_model"
+   ],
+   "delivered_via": "assistant_final_message",
+   "condition": "The model emitted a word-cloud fence without the tool; replaces that block in the final AIMessage.",
+   "semantic": {
+    "summary": "Replaces a model-authored word-cloud block, failing closed so untrusted chart data never ships.",
+    "facets": [
+     {
+      "label": "chart-rendering",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "error-recovery",
+      "confidence": "inferred",
+      "basis": [
+       "delivery_path"
+      ],
+      "refs": [
+       "assistant_final_message"
+      ]
+     },
+     {
+      "label": "word-cloud",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:word-cloud-generation"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:word-cloud-generation",
+      "role": "untrusted-output-guard",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   },
+   "uncertainty": "Primarily user-facing. It reaches the model only when a later round replays this AIMessage through _trim_history."
+  },
+  {
+   "id": "instruction:tool_prompts.WORD_CLOUD_SCOPE_UNAVAILABLE",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "WORD_CLOUD_SCOPE_UNAVAILABLE",
+    "start_line": 134,
+    "end_line": 137
+   },
+   "excerpt": "Word cloud unavailable: the run's survey scope is not established, so the question cannot be authorized.",
+   "definition_sha256": "6b7ae8cf28efbcc67e35133bc754540c02120cc1aeec8b994ff005d92c422b8b",
+   "used_by": [
+    "funda_agent_exp.generate_word_cloud"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "_scope_published() is false when a word cloud is requested.",
+   "semantic": {
+    "summary": "Reports that the run's survey scope is not established, so no word cloud can be built.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "scope-enforcement",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "word-cloud",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:tool-error-recovery",
+     "workflow:word-cloud-generation"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "scope-unavailable-result",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:word-cloud-generation",
+      "role": "scope-unavailable-result",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.ZERO_ROW_HEAD",
+   "kind": "template_substitution",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "ZERO_ROW_HEAD",
+    "start_line": 542,
+    "end_line": 542
+   },
+   "excerpt": "Query succeeded but matched 0 rows",
+   "definition_sha256": "26ed24f146617993e8c82ccf41c96ab38d8de265e4941c9e94503ef17df126d3",
+   "used_by": [
+    "tool_prompts.ZERO_ROW_MSG"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "Component of ZERO_ROW_MSG; opens that message.",
+   "semantic": {
+    "summary": "Header stating a query succeeded but matched no rows.",
+    "facets": [
+     {
+      "label": "zero-row-diagnosis",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:sql-retrieval"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:sql-retrieval",
+      "role": "zero-row-header",
+      "strength": "adjacent",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.ZERO_ROW_MSG",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "ZERO_ROW_MSG",
+    "start_line": 549,
+    "end_line": 560
+   },
+   "excerpt": "ZERO_ROW_MSG = ( f\"{ZERO_ROW_HEAD}. The ids are not necessarily wrong -- an empty result is just as \" \"often an empty JOIN as a bad filter. Before loosening scope or rewriting v...",
+   "definition_sha256": "cedf790b3633f7e1ffdedc26a72b4cea670bfbd07c3cafb678fbefc5c65b34f3",
+   "used_by": [
+    "funda_agent_exp.nl2sql_tool"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "The query executed and returned an empty row set.",
+   "semantic": {
+    "summary": "Frames an empty result as possibly correct and lists what to check before rewriting.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "sql-generation",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "zero-row-diagnosis",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:sql-retrieval",
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:sql-retrieval",
+      "role": "zero-row-result",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "zero-row-result",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   },
+   "composed_from": [
+    "instruction:tool_prompts.ZERO_ROW_HEAD"
+   ]
+  },
+  {
+   "id": "instruction:tool_prompts._PACKET_UNAVAILABLE_REASONS",
+   "kind": "template_substitution",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "_PACKET_UNAVAILABLE_REASONS",
+    "start_line": 89,
+    "end_line": 103
+   },
+   "excerpt": "_PACKET_UNAVAILABLE_REASONS = { \"unavailable\": ( \"a database error occurred. This says nothing about the survey itself; the questions and \" \"responses may well exist\" ), \"not_fo...",
+   "definition_sha256": "c67ac86e417553fdd5bbb19028babce4e1c56ef701d240d132276e0c007b4a03",
+   "used_by": [
+    "tool_prompts.packet_not_available"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "Component of packet_not_available; selected by packet status.",
+   "semantic": {
+    "summary": "Per-status explanations substituted into the packet-unavailable message.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "survey-analysis-packet",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "reason-lookup",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.analysis_packet_preamble",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "analysis_packet_preamble",
+    "start_line": 48,
+    "end_line": 54
+   },
+   "excerpt": "def analysis_packet_preamble(survey_title: str) -> str: return ( f'{ANALYSIS_PACKET_RESULT_HEAD} \"{survey_title}\".\\n' \"This is the complete, cached-compatible inventory for that...",
+   "definition_sha256": "779f7a8c74633bc3c30fdaace774878efe4fbfbc6e3a9d5601bbc835dd68e881",
+   "used_by": [
+    "funda_agent_exp.get_survey_analysis_packet"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "Success path of get_survey_analysis_packet, prefixed to the packet payload.",
+   "semantic": {
+    "summary": "Reading instructions prefixed to a fetched analysis packet, naming the survey it belongs to.",
+    "facets": [
+     {
+      "label": "result-formatting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "survey-analysis-packet",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:startup-inventory"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:startup-inventory",
+      "role": "packet-read-instructions",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   },
+   "composed_from": [
+    "instruction:tool_prompts.ANALYSIS_PACKET_RESULT_HEAD"
+   ],
+   "dynamic_content_from": "funda_agent_exp._survey_owner (survey title) and _survey_analysis_packet_payload"
+  },
+  {
+   "id": "instruction:tool_prompts.cluster_bad_k",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "cluster_bad_k",
+    "start_line": 398,
+    "end_line": 404
+   },
+   "excerpt": "def cluster_bad_k(k: int, n_respondents: int | None = None) -> str: if n_respondents is not None: return ( f\"Clustering unavailable: k={k} is not usable with {n_respondents} res...",
+   "definition_sha256": "23560f357aae10057f4c9b57ea4aa36d1187e6c53ff4719ff2b84fa1946fcb10",
+   "used_by": [
+    "funda_agent_exp.cluster_rating_profiles"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "k falls outside 2-8, or is not below the complete-respondent count.",
+   "semantic": {
+    "summary": "Reports an unusable cluster count, with the respondent base when that is the limit.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "respondent-clustering",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:respondent-clustering",
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:respondent-clustering",
+      "role": "refusal-message",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "refusal-message",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.cluster_bad_question_id",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "cluster_bad_question_id",
+    "start_line": 387,
+    "end_line": 388
+   },
+   "excerpt": "def cluster_bad_question_id(question_ids: list[str]) -> str: return f\"Clustering unavailable: invalid question UUID(s): {question_ids}.\"",
+   "definition_sha256": "b912d667488afb3161200463bc99e9893e8112bb3aaac5f6b69b86a6e3f3d878",
+   "used_by": [
+    "funda_agent_exp.cluster_rating_profiles"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "A clustered question id fails _UUID_RE.",
+   "semantic": {
+    "summary": "Reports which supplied question UUIDs were malformed.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "respondent-clustering",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:respondent-clustering",
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:respondent-clustering",
+      "role": "refusal-message",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "refusal-message",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.cluster_mixed_scales",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "cluster_mixed_scales",
+    "start_line": 415,
+    "end_line": 419
+   },
+   "excerpt": "def cluster_mixed_scales(scales: list[str]) -> str: return ( f\"Clustering unavailable: the named questions use different scales ({', '.join(scales)}). \" \"Cluster one set of ques...",
+   "definition_sha256": "80ca8bf94224725d4f11f58da9b43ad18d1710af1ee693a98d93526f0eb767a1",
+   "used_by": [
+    "funda_agent_exp.cluster_rating_profiles"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "The basis questions do not share one slider range.",
+   "semantic": {
+    "summary": "Refuses a basis whose questions use different scales and names the scales found.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "respondent-clustering",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:respondent-clustering",
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:respondent-clustering",
+      "role": "refusal-message",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "refusal-message",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.cluster_multi_product",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "cluster_multi_product",
+    "start_line": 430,
+    "end_line": 435
+   },
+   "excerpt": "def cluster_multi_product(question_id: str) -> str: return ( f\"Clustering unavailable: respondents evaluated more than one product on question \" f\"{question_id}. This tool clust...",
+   "definition_sha256": "39a89ec63897cee844ee3689baf0e8c05a039cce3b36e06c930465ef3261132e",
+   "used_by": [
+    "funda_agent_exp.cluster_rating_profiles"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "A respondent holds more than one rating for one question.",
+   "semantic": {
+    "summary": "Refuses a sequential-monadic grain this version does not split per product.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "respondent-clustering",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:respondent-clustering",
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:respondent-clustering",
+      "role": "refusal-message",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "refusal-message",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.cluster_no_data",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "cluster_no_data",
+    "start_line": 438,
+    "end_line": 442
+   },
+   "excerpt": "def cluster_no_data(n_respondents: int) -> str: return ( f\"Clustering unavailable: only {n_respondents} respondent(s) answered every named \" \"question, which is too few to clust...",
+   "definition_sha256": "3b2f857e76611988db105044efa4ef2dbc19719c02e1a728c59432fcf4dab4b1",
+   "used_by": [
+    "funda_agent_exp.cluster_rating_profiles"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "Fewer than ten respondents answered every named question.",
+   "semantic": {
+    "summary": "Reports too few complete respondents to cluster.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "respondent-clustering",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:respondent-clustering",
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:respondent-clustering",
+      "role": "refusal-message",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "refusal-message",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.cluster_summary_measure",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "cluster_summary_measure",
+    "start_line": 422,
+    "end_line": 427
+   },
+   "excerpt": "def cluster_summary_measure(question_id: str, label: str) -> str: return ( f\"Clustering refused: question {question_id} ({label!r}) reads as an overall/summary \" \"measure, which...",
+   "definition_sha256": "3383708020213075b3f2f6cba95f4e8da337c1d610e29bb4a5bc7d3284ef9a51",
+   "used_by": [
+    "funda_agent_exp.cluster_rating_profiles"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "A basis question reads as an overall/summary measure.",
+   "semantic": {
+    "summary": "Refuses a summary measure in the basis and directs it to overall_question_id.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "respondent-clustering",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:respondent-clustering",
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:respondent-clustering",
+      "role": "refusal-message",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "refusal-message",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.cluster_too_few_questions",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "cluster_too_few_questions",
+    "start_line": 391,
+    "end_line": 395
+   },
+   "excerpt": "def cluster_too_few_questions() -> str: return ( \"Clustering unavailable: a rating profile needs at least two attribute questions. \" \"Name every attribute question the user want...",
+   "definition_sha256": "10663780369a44cdcf270971d3b5518ff0dcb1d85c0662b29ed75fb05414057a",
+   "used_by": [
+    "funda_agent_exp.cluster_rating_profiles"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "Fewer than two distinct basis questions were supplied.",
+   "semantic": {
+    "summary": "Requires at least two attribute questions before a profile can be clustered.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "respondent-clustering",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:respondent-clustering",
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:respondent-clustering",
+      "role": "refusal-message",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "refusal-message",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.cluster_unsupported_type",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "cluster_unsupported_type",
+    "start_line": 407,
+    "end_line": 412
+   },
+   "excerpt": "def cluster_unsupported_type(question_id: str, question_type: str) -> str: return ( f\"Clustering unavailable: question {question_id} is {question_type!r}. This tool clusters \" \"...",
+   "definition_sha256": "85940f89eca83d27e29ae1c3076949d427ccf654d0514a9c4b0a3b42c303e15f",
+   "used_by": [
+    "funda_agent_exp.cluster_rating_profiles"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "A named question is not a vertical-rating.",
+   "semantic": {
+    "summary": "Refuses a non-rating question, naming line-scale as the unsupported multi-attribute case.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "respondent-clustering",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:respondent-clustering",
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:respondent-clustering",
+      "role": "refusal-message",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "refusal-message",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.error_hint",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "error_hint",
+    "start_line": 521,
+    "end_line": 525
+   },
+   "excerpt": "def error_hint(message: str) -> str: for pattern, hint in SQL_ERROR_HINTS: if re.search(pattern, message, re.I): return f\"\\nHINT: {hint}\" return \"\"",
+   "definition_sha256": "df561f0a4b4aa36b3d1a5e8276db112ad03f7eca59895184740d10e86c661405",
+   "used_by": [
+    "tool_prompts.sql_failure"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "Component of sql_failure; returns a hint only when a pattern matches.",
+   "semantic": {
+    "summary": "Selects the fix hint for a database error message, or nothing when no pattern matches.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "inferred",
+      "basis": [
+       "composed_from"
+      ],
+      "refs": [
+       "instruction:tool_prompts.SQL_ERROR_HINTS"
+      ]
+     },
+     {
+      "label": "sql-dialect-rules",
+      "confidence": "inferred",
+      "basis": [
+       "composed_from"
+      ],
+      "refs": [
+       "instruction:tool_prompts.SQL_ERROR_HINTS"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "error-hint-selector",
+      "strength": "supporting",
+      "confidence": "inferred",
+      "basis": [
+       "composed_from"
+      ],
+      "refs": [
+       "instruction:tool_prompts.SQL_ERROR_HINTS"
+      ]
+     }
+    ]
+   },
+   "composed_from": [
+    "instruction:tool_prompts.SQL_ERROR_HINTS"
+   ]
+  },
+  {
+   "id": "instruction:tool_prompts.multi_statement_error",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "multi_statement_error",
+    "start_line": 610,
+    "end_line": 611
+   },
+   "excerpt": "def multi_statement_error(reason: str) -> str: return f\"SQL error: {reason}. Rewrite as one query (use JOINs or CTEs) and retry.\"",
+   "definition_sha256": "f7ece0876d3c5ed8000e229f0989f1555289f509392498e35702d0906cd3ca7d",
+   "used_by": [
+    "funda_agent_exp.nl2sql_tool"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "Any _reject_reason hit; wraps that reason as the whole tool result.",
+   "semantic": {
+    "summary": "Wrapper that returns one of the three SQL rejection reasons to the model.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "inferred",
+      "basis": [
+       "composed_from"
+      ],
+      "refs": [
+       "instruction:tool_prompts.REJECT_NOT_SELECT"
+      ]
+     },
+     {
+      "label": "sql-generation",
+      "confidence": "inferred",
+      "basis": [
+       "composed_from"
+      ],
+      "refs": [
+       "instruction:tool_prompts.REJECT_BATCH"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:sql-retrieval",
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:sql-retrieval",
+      "role": "query-rejection-wrapper",
+      "strength": "supporting",
+      "confidence": "inferred",
+      "basis": [
+       "composed_from"
+      ],
+      "refs": [
+       "instruction:tool_prompts.REJECT_BATCH"
+      ]
+     },
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "query-rejection-wrapper",
+      "strength": "core",
+      "confidence": "inferred",
+      "basis": [
+       "composed_from"
+      ],
+      "refs": [
+       "instruction:tool_prompts.SEMANTIC_FILTER_REASON"
+      ]
+     }
+    ]
+   },
+   "composed_from": [
+    "instruction:tool_prompts.REJECT_BATCH",
+    "instruction:tool_prompts.REJECT_NOT_SELECT",
+    "instruction:tool_prompts.SEMANTIC_FILTER_REASON"
+   ]
+  },
+  {
+   "id": "instruction:tool_prompts.packet_bad_survey_id",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "packet_bad_survey_id",
+    "start_line": 57,
+    "end_line": 58
+   },
+   "excerpt": "def packet_bad_survey_id(survey_id: str) -> str: return f\"Analysis packet unavailable: survey_id must be a UUID, got {survey_id!r}.\"",
+   "definition_sha256": "7b5d1933c11ce0456f05f17ea669aa9f7aa5a92189f4c0e67eb54ac969ee2230",
+   "used_by": [
+    "funda_agent_exp.get_survey_analysis_packet"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "survey_id fails _UUID_RE.",
+   "semantic": {
+    "summary": "Rejects a malformed survey UUID passed to the analysis-packet tool.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "survey-analysis-packet",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "argument-rejection",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.packet_not_available",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "packet_not_available",
+    "start_line": 106,
+    "end_line": 112
+   },
+   "excerpt": "def packet_not_available(survey_title: str, status: str = \"unavailable\") -> str: reason = _PACKET_UNAVAILABLE_REASONS.get(status, _PACKET_UNAVAILABLE_REASONS[\"unavailable\"]) suf...",
+   "definition_sha256": "45d60e65d1934fdd307e8a5050d6bdad519e3f92091433ce4f8bf10e64ba693f",
+   "used_by": [
+    "funda_agent_exp.get_survey_analysis_packet"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "The packet build returned a status with no safe payload.",
+   "semantic": {
+    "summary": "Explains why a named survey's packet is unavailable, using the status-specific reason.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "survey-analysis-packet",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:startup-inventory",
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:startup-inventory",
+      "role": "unavailable-result",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "unavailable-result",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   },
+   "composed_from": [
+    "instruction:tool_prompts._PACKET_UNAVAILABLE_REASONS"
+   ],
+   "dynamic_content_from": "funda_agent_exp._survey_owner (survey title) and packet status"
+  },
+  {
+   "id": "instruction:tool_prompts.packet_survey_out_of_scope",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "packet_survey_out_of_scope",
+    "start_line": 76,
+    "end_line": 82
+   },
+   "excerpt": "def packet_survey_out_of_scope(survey_id: str) -> str: return ( f\"Analysis packet refused: survey {survey_id} is outside the initial survey's client and is \" \"not the benchmark ...",
+   "definition_sha256": "475201a616d0ead2b14edb5411dac2f6c29472bc57301bd81cb60e3f86bf1a9f",
+   "used_by": [
+    "funda_agent_exp.get_survey_analysis_packet"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "The requested survey is outside the run's authorized client boundary.",
+   "semantic": {
+    "summary": "Refuses a packet for a survey outside the client boundary and says why.",
+    "facets": [
+     {
+      "label": "cross-survey-analysis",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "scope-enforcement",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "survey-analysis-packet",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:scope-authorization",
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:scope-authorization",
+      "role": "boundary-refusal",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "boundary-refusal",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.packet_unknown_survey",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "packet_unknown_survey",
+    "start_line": 72,
+    "end_line": 73
+   },
+   "excerpt": "def packet_unknown_survey(survey_id: str) -> str: return f\"Analysis packet unavailable: no survey exists for id {survey_id}.\"",
+   "definition_sha256": "fdf65daec30d15a2020850cc0d601ba27e20f24f8f4a82f610d703dbb9e2e6c1",
+   "used_by": [
+    "funda_agent_exp.get_survey_analysis_packet"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "The survey id resolves to no known survey.",
+   "semantic": {
+    "summary": "Reports an unknown survey id back to the model.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "survey-analysis-packet",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "argument-rejection",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.scope_repair_note",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "scope_repair_note",
+    "start_line": 585,
+    "end_line": 589
+   },
+   "excerpt": "def scope_repair_note(repairs: list[str]) -> str: return ( \"[scope-id repair: \" + \"; \".join(repairs) + \". The ids are supplied to you -- write \" \":client_id / :organization_id /...",
+   "definition_sha256": "57c1602d65c13b163053b6f278c9cc089ccb0ad249a75205ef2f01249108493f",
+   "used_by": [
+    "funda_agent_exp.nl2sql_tool"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "_repair_scope_ids rewrote at least one id; prefixed to every nl2sql return path.",
+   "semantic": {
+    "summary": "Tells the model which scope ids the runtime silently corrected in its query.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "scope-enforcement",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "sql-generation",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:scope-authorization",
+     "workflow:sql-retrieval"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:scope-authorization",
+      "role": "repair-disclosure",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:sql-retrieval",
+      "role": "repair-disclosure",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   },
+   "dynamic_content_from": "funda_agent_exp._repair_scope_ids (the list of repairs made)"
+  },
+  {
+   "id": "instruction:tool_prompts.sql_failure",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "sql_failure",
+    "start_line": 528,
+    "end_line": 539
+   },
+   "excerpt": "def sql_failure(message: str, sql: str, stage: str = \"\") -> str: where = f\" ({stage})\" if stage else \"\" tail = error_hint(message) if len(sql) > BIG_SQL_CHARS: tail += ( f\"\\nNOT...",
+   "definition_sha256": "693e5000168f145597cf682bc6225acb335463f9d69a16ccf5ba320271150c23",
+   "used_by": [
+    "funda_agent_exp.nl2sql_tool"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "Any exception from the SQL executor; prefixed by repair_note.",
+   "semantic": {
+    "summary": "Returns a failed query's error with the matching fix hint and, when short enough, the SQL itself.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "sql-dialect-rules",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "sql-generation",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:sql-retrieval",
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:sql-retrieval",
+      "role": "sql-failure-result",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "sql-failure-result",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   },
+   "composed_from": [
+    "instruction:tool_prompts.BIG_SQL_CHARS",
+    "instruction:tool_prompts.error_hint"
+   ],
+   "dynamic_content_from": "funda_agent_exp.nl2sql_tool (database exception text and the submitted SQL)"
+  },
+  {
+   "id": "instruction:tool_prompts.stats_bad_question_id",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "stats_bad_question_id",
+    "start_line": 625,
+    "end_line": 627
+   },
+   "excerpt": "def stats_bad_question_id(question_id: str) -> str: return (f\"Error: '{question_id}' is not a valid question UUID. \" \"Pick an id from the provided question list.\")",
+   "definition_sha256": "a946c4b93dab911b979fdd7f8666152f3b527126a3197e5b76337c97d290abe8",
+   "used_by": [
+    "funda_agent_exp.run_survey_stats"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "question_id fails _UUID_RE.",
+   "semantic": {
+    "summary": "Rejects a malformed question UUID passed to the statistics tool.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "statistical-testing",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:statistical-analysis",
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:statistical-analysis",
+      "role": "argument-rejection",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "argument-rejection",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.stats_bad_reference_id",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "stats_bad_reference_id",
+    "start_line": 637,
+    "end_line": 638
+   },
+   "excerpt": "def stats_bad_reference_id(reference_question_id: str) -> str: return f\"Error: reference_question_id '{reference_question_id}' is not a valid UUID.\"",
+   "definition_sha256": "bfe494a295892f6113a75b97ba6f643db855ddcf6470059824af8a0adacc8954",
+   "used_by": [
+    "funda_agent_exp.run_survey_stats"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "reference_question_id fails _UUID_RE.",
+   "semantic": {
+    "summary": "Rejects a malformed reference question UUID.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "statistical-testing",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:statistical-analysis",
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:statistical-analysis",
+      "role": "argument-rejection",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "argument-rejection",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.stats_http_error",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "stats_http_error",
+    "start_line": 650,
+    "end_line": 651
+   },
+   "excerpt": "def stats_http_error(status_code: int, body: str) -> str: return f\"Error ({status_code}): {body}\"",
+   "definition_sha256": "b6784f0fc0d4ad93d20bf04097f38a340e71773ab9939ea380feffb906974dda",
+   "used_by": [
+    "funda_agent_exp.run_survey_stats"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "The Charts API returns a non-success HTTP status.",
+   "semantic": {
+    "summary": "Reports a statistics API HTTP error with its status and message.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "statistical-testing",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "transport-failure",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   },
+   "dynamic_content_from": "funda_agent_exp.run_survey_stats (HTTP status code and response body)"
+  },
+  {
+   "id": "instruction:tool_prompts.stats_missing_reference",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "stats_missing_reference",
+    "start_line": 630,
+    "end_line": 634
+   },
+   "excerpt": "def stats_missing_reference(stats_types: str) -> str: return ( f\"Error: stats_types={stats_types} requires reference_question_id \" \"(pearson/spearman/penalty all need a second q...",
+   "definition_sha256": "25fbe7ca8957c48f80b84d65a0dcc6bfd1243390439092985e6fa55787f4ba66",
+   "used_by": [
+    "funda_agent_exp.run_survey_stats"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "A requested stats type needs reference_question_id and none was supplied.",
+   "semantic": {
+    "summary": "Names the stats types that require a reference question and asks for one.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "statistical-testing",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "tool-argument-guidance",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:statistical-analysis",
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:statistical-analysis",
+      "role": "missing-argument-repair",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "missing-argument-repair",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   },
+   "dynamic_content_from": "funda_agent_exp.run_survey_stats (the requested stats types)"
+  },
+  {
+   "id": "instruction:tool_prompts.stats_request_failed",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "stats_request_failed",
+    "start_line": 646,
+    "end_line": 647
+   },
+   "excerpt": "def stats_request_failed(exc: object) -> str: return f\"Error: Charts API request failed: {exc}\"",
+   "definition_sha256": "440579c588780b1fa0a31e31e47a829038a19dfc6ce48b6c8fc039de43aa5948",
+   "used_by": [
+    "funda_agent_exp.run_survey_stats"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "The Charts API request raises a transport exception.",
+   "semantic": {
+    "summary": "Reports a failed statistics API request with the underlying error.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "statistical-testing",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "transport-failure",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   },
+   "dynamic_content_from": "funda_agent_exp.run_survey_stats (the transport exception)"
+  },
+  {
+   "id": "instruction:tool_prompts.tool_error",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "tool_error",
+    "start_line": 662,
+    "end_line": 663
+   },
+   "excerpt": "def tool_error(exc: BaseException) -> str: return f\"Tool error: {type(exc).__name__}: {exc}\"",
+   "definition_sha256": "039e0f335ded08620510c3c5d489e8004b3bb25b6e58ee0b40066dd4a8b1a507",
+   "used_by": [
+    "funda_agent_exp._invoke_tool_call"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "Any uncaught exception raised inside a tool invocation.",
+   "semantic": {
+    "summary": "Returns an uncaught tool exception to the model as feedback rather than failing the run.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "exception-passthrough",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   },
+   "dynamic_content_from": "funda_agent_exp._invoke_tool_call (the raised exception)"
+  },
+  {
+   "id": "instruction:tool_prompts.unknown_tool",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "unknown_tool",
+    "start_line": 658,
+    "end_line": 659
+   },
+   "excerpt": "def unknown_tool(name: str) -> str: return f\"Unknown tool: {name}\"",
+   "definition_sha256": "b320362f1884b83fe7a8793d6ae690e40f02d24649cbf9882997e04dd4b5d445",
+   "used_by": [
+    "funda_agent_exp._invoke_tool_call"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "The model emitted a tool name absent from tools_by_name.",
+   "semantic": {
+    "summary": "Tells the model the tool it called does not exist.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:tool-error-recovery"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "unknown-tool-result",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   },
+   "dynamic_content_from": "funda_agent_exp._invoke_tool_call (the requested tool name)"
+  },
+  {
+   "id": "instruction:tool_prompts.wide_result_note",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "wide_result_note",
+    "start_line": 569,
+    "end_line": 581
+   },
+   "excerpt": "def wide_result_note(entities: int, measures: int) -> str: return ( f\"[shape candidate: {entities} returned rows x {measures} numeric measure columns. This \" \"is a high-confiden...",
+   "definition_sha256": "269217fc7ebbb936e5a22f632d02a95a883d78bbef5a42d0400aede485bf2a86",
+   "used_by": [
+    "funda_agent_exp._wide_result_hint"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "A successful result has at least _WIDE_RESULT_MIN_MEASURES numeric measures and a label column.",
+   "semantic": {
+    "summary": "Nudges a wide numeric result into the nested hierarchical answer form.",
+    "facets": [
+     {
+      "label": "result-formatting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "sql-generation",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:answer-formatting",
+     "workflow:sql-retrieval"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:answer-formatting",
+      "role": "wide-result-hint",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:sql-retrieval",
+      "role": "wide-result-hint",
+      "strength": "adjacent",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   },
+   "dynamic_content_from": "funda_agent_exp._wide_result_hint (row and measure counts)"
+  },
+  {
+   "id": "instruction:tool_prompts.word_cloud_bad_question_id",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "word_cloud_bad_question_id",
+    "start_line": 140,
+    "end_line": 144
+   },
+   "excerpt": "def word_cloud_bad_question_id(question_id: str) -> str: return ( f\"Word cloud unavailable: {question_id!r} is not a valid question UUID. \" \"Choose an open-ended question id fro...",
+   "definition_sha256": "73d594bbb5d57ee0c42457e4ef8b24f6578bf483a32210ac8bb3ab7f0e779df5",
+   "used_by": [
+    "funda_agent_exp.generate_word_cloud"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "question_id fails _UUID_RE.",
+   "semantic": {
+    "summary": "Rejects a malformed question UUID and points at the inventory for a valid one.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "word-cloud",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:tool-error-recovery",
+     "workflow:word-cloud-generation"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "argument-rejection",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:word-cloud-generation",
+      "role": "argument-rejection",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "instruction:tool_prompts.word_cloud_question_unavailable",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "word_cloud_question_unavailable",
+    "start_line": 147,
+    "end_line": 148
+   },
+   "excerpt": "def word_cloud_question_unavailable(reason: str) -> str: return f\"Word cloud unavailable: {reason}.\"",
+   "definition_sha256": "147ade0e4b8d0f0a887a85311d4d1d4a92283ae86ca466dba17732484f5be24e",
+   "used_by": [
+    "funda_agent_exp.generate_word_cloud"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "Three paths: question lookup error, aggregation error, or a database retrieval failure.",
+   "semantic": {
+    "summary": "Reports that the requested question cannot produce a word cloud, with the reason.",
+    "facets": [
+     {
+      "label": "error-recovery",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "word-cloud",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:tool-error-recovery",
+     "workflow:word-cloud-generation"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:tool-error-recovery",
+      "role": "unavailable-result",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "workflow_id": "workflow:word-cloud-generation",
+      "role": "unavailable-result",
+      "strength": "supporting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   },
+   "dynamic_content_from": "funda_agent_exp.generate_word_cloud (exception text or a fixed failure phrase)"
+  },
+  {
+   "id": "instruction:tool_prompts.word_cloud_ready",
+   "kind": "tool_result_guidance",
+   "source": {
+    "path": "tool_prompts.py",
+    "symbol": "word_cloud_ready",
+    "start_line": 151,
+    "end_line": 157
+   },
+   "excerpt": "def word_cloud_ready(question: str, answer_count: int, grouped: bool) -> str: grouping = \"grouped by product\" if grouped else \"not grouped\" return ( f\"Trusted word-cloud artifac...",
+   "definition_sha256": "eed388983174a5e454a63a00ebbe67b233948b74f551b083c02c46f50147b5f8",
+   "used_by": [
+    "funda_agent_exp.call_tool"
+   ],
+   "delivered_via": "tool_result",
+   "condition": "Replaces the raw word-cloud result once call_tool validates the artifact envelope.",
+   "semantic": {
+    "summary": "Confirms a built word cloud and tells the model the artifact is already held by the runtime.",
+    "facets": [
+     {
+      "label": "chart-rendering",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "result-formatting",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     },
+     {
+      "label": "word-cloud",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ],
+    "workflow_ids": [
+     "workflow:word-cloud-generation"
+    ],
+    "workflow_roles": [
+     {
+      "workflow_id": "workflow:word-cloud-generation",
+      "role": "success-result",
+      "strength": "core",
+      "confidence": "explicit",
+      "basis": [
+       "source_text"
+      ]
+     }
+    ]
+   },
+   "dynamic_content_from": "funda_agent_exp.call_tool (question text, answer count, grouping flag)"
+  }
+ ],
+ "delivery_paths": [
+  {
+   "id": "system_message",
+   "condition": "Every model call. One SystemMessage built once at import; no lean or per-turn variant exists.",
+   "branch_expressions": [
+    "messages = [SYSTEM_PROMPT] + _trim_history(state['messages'])"
+   ],
+   "sink": "funda_agent_exp.call_model -> active_model.invoke",
+   "steps": [
+    {
+     "source": "agent_instructions.build_system_prompt",
+     "action": "composes the twelve static fragments in fixed order, schema last"
+    },
+    {
+     "source": "agent_instructions.SYSTEM_PROMPT_TEXT",
+     "action": "evaluates the builder once at import time"
+    },
+    {
+     "source": "funda_agent_exp.SYSTEM_PROMPT",
+     "action": "wraps the text in a SystemMessage at module import"
+    },
+    {
+     "source": "funda_agent_exp.call_model",
+     "action": "prepends it to the trimmed history"
+    },
+    {
+     "source": "funda_agent_exp.call_model",
+     "action": "invokes active_model"
+    }
+   ],
+   "instruction_ids": [
+    "instruction:agent_instructions.CLUSTER_RULES",
+    "instruction:agent_instructions.build_system_prompt"
+   ],
+   "dynamic_builders": []
+  },
+  {
+   "id": "user_message",
+   "condition": "The first CLI round or fresh API thread carries scope and optional nonempty inventory. Follow-ups send the raw question and retain the initial anchor. A model-invoking final budget turn adds STEP_BUDGET_NOTICE.",
+   "branch_expressions": [
+    "question = scoped_query(args.prompt, args.client_id, args.org_id, args.survey_id)",
+    "inventory = '' if args.no_inventory else survey_inventory(args.survey_id)",
+    "question += inventory",
+    "if state['number_of_steps'] >= MAX_LLM_STEPS - 1: messages.append(HumanMessage(content=STEP_BUDGET_NOTICE))",
+    "question = req.prompt if is_follow_up else _scope_text(req.prompt, req.survey_id, scope)",
+    "if not is_follow_up and not req.no_inventory:",
+    "if scope: return agent.scoped_query(prompt, scope[0], scope[1], survey_id)",
+    "return agent.scoped_query_survey_only(prompt, survey_id)",
+    "question = req.prompt if is_follow_up else _scope_text(req.prompt, req.survey_id, scope)",
+    "if not is_follow_up and not req.no_inventory:",
+    "if scope: return agent.scoped_query(prompt, scope[0], scope[1], survey_id)",
+    "return agent.scoped_query_survey_only(prompt, survey_id)",
+    "question = req.prompt if is_follow_up else _scope_text(req.prompt, req.survey_id, scope)",
+    "if not is_follow_up and not req.no_inventory:",
+    "if scope: return agent.scoped_query(prompt, scope[0], scope[1], survey_id)",
+    "return agent.scoped_query_survey_only(prompt, survey_id)",
+    "question = req.prompt if is_follow_up else _scope_text(req.prompt, req.survey_id, scope)",
+    "if not is_follow_up and not req.no_inventory:",
+    "if scope: return agent.scoped_query(prompt, scope[0], scope[1], survey_id)",
+    "return agent.scoped_query_survey_only(prompt, survey_id)"
+   ],
+   "sink": "funda_agent_exp.call_model -> active_model.invoke",
+   "steps": [
+    {
+     "source": "agent_instructions.scoped_query",
+     "action": "builds the full SCOPE id block for the CLI or a fresh API thread with client/organization scope"
+    },
+    {
+     "source": "api_funda_agent_exp._scope_text",
+     "action": "selects scoped_query or scoped_query_survey_only according to the resolved scope"
+    },
+    {
+     "source": "api_funda_agent_exp._scope_text",
+     "action": "selects scoped_query or scoped_query_survey_only according to the resolved scope"
+    },
+    {
+     "source": "api_funda_agent_exp._scope_text",
+     "action": "selects scoped_query or scoped_query_survey_only according to the resolved scope"
+    },
+    {
+     "source": "api_funda_agent_exp._scope_text",
+     "action": "selects scoped_query or scoped_query_survey_only according to the resolved scope"
+    },
+    {
+     "source": "funda_agent_exp.survey_inventory",
+     "action": "prefixes INVENTORY_PREAMBLE to the packet payload, or returns ''"
+    },
+    {
+     "source": "funda_agent_exp.main",
+     "action": "concatenates both into one HumanMessage as the graph input"
+    },
+    {
+     "source": "api_funda_agent_exp._run",
+     "action": "clears and republishes _SCOPE; a fresh thread gets scope and optional inventory, a follow-up sends only the new question and reuses the checkpoint anchor; GRAPH.astream enters the shared graph"
+    },
+    {
+     "source": "api_funda_agent_exp._run",
+     "action": "clears and republishes _SCOPE; a fresh thread gets scope and optional inventory, a follow-up sends only the new question and reuses the checkpoint anchor; GRAPH.astream enters the shared graph"
+    },
+    {
+     "source": "api_funda_agent_exp._run",
+     "action": "clears and republishes _SCOPE; a fresh thread gets scope and optional inventory, a follow-up sends only the new question and reuses the checkpoint anchor; GRAPH.astream enters the shared graph"
+    },
+    {
+     "source": "api_funda_agent_exp._run",
+     "action": "clears and republishes _SCOPE; a fresh thread gets scope and optional inventory, a follow-up sends only the new question and reuses the checkpoint anchor; GRAPH.astream enters the shared graph"
+    },
+    {
+     "source": "funda_agent_exp.call_model",
+     "action": "appends STEP_BUDGET_NOTICE as a second HumanMessage on the final turn"
+    }
+   ],
+   "instruction_ids": [
+    "instruction:agent_instructions.INVENTORY_PREAMBLE",
+    "instruction:agent_instructions.STEP_BUDGET_NOTICE",
+    "instruction:agent_instructions.scoped_query",
+    "instruction:agent_instructions.scoped_query_survey_only"
+   ],
+   "dynamic_builders": [
+    {
+     "builder": "funda_agent_exp.main",
+     "delivered_via": "user_message",
+     "condition": "First CLI round (ids and question); interactive follow-ups send only the new question",
+     "content": "The user's question and the run's client, organization and survey ids from argparse.",
+     "source": {
+      "path": "funda_agent_exp.py",
+      "symbol": "main",
+      "start_line": 4030,
+      "end_line": 4101
+     }
+    },
+    {
+     "builder": "funda_agent_exp.survey_inventory",
+     "delivered_via": "user_message",
+     "condition": "First CLI round or fresh API thread, unless no_inventory; any nonempty packet payload is attached (including success, empty, or degraded); unavailable/not_found inject nothing",
+     "content": "The survey's columnar measure inventory plus resolved benchmark_context.",
+     "source": {
+      "path": "funda_agent_exp.py",
+      "symbol": "survey_inventory",
+      "start_line": 3504,
+      "end_line": 3513
+     }
+    },
+    {
+     "builder": "api_funda_agent_exp._run",
+     "delivered_via": "user_message",
+     "condition": "Every accepted API request; fresh thread and follow-up take different assembly branches",
+     "content": "Request prompt and survey_id; explicit client/organization ids or resolve_scope output on fresh threads; checkpointed messages retain the original scope/inventory on follow-ups.",
+     "source": {
+      "path": "api_funda_agent_exp.py",
+      "symbol": "_run",
+      "start_line": 222,
+      "end_line": 391
+     }
+    },
+    {
+     "builder": "api_funda_agent_exp._run",
+     "delivered_via": "user_message",
+     "condition": "Every accepted API request; fresh thread and follow-up take different assembly branches",
+     "content": "Request prompt and survey_id; explicit client/organization ids or resolve_scope output on fresh threads; checkpointed messages retain the original scope/inventory on follow-ups.",
+     "source": {
+      "path": "api_funda_agent_exp.py",
+      "symbol": "_run",
+      "start_line": 222,
+      "end_line": 391
+     }
+    },
+    {
+     "builder": "api_funda_agent_exp._run",
+     "delivered_via": "user_message",
+     "condition": "Every accepted API request; fresh thread and follow-up take different assembly branches",
+     "content": "Request prompt and survey_id; explicit client/organization ids or resolve_scope output on fresh threads; checkpointed messages retain the original scope/inventory on follow-ups.",
+     "source": {
+      "path": "api_funda_agent_exp.py",
+      "symbol": "_run",
+      "start_line": 222,
+      "end_line": 391
+     }
+    },
+    {
+     "builder": "api_funda_agent_exp._run",
+     "delivered_via": "user_message",
+     "condition": "Every accepted API request; fresh thread and follow-up take different assembly branches",
+     "content": "Request prompt and survey_id; explicit client/organization ids or resolve_scope output on fresh threads; checkpointed messages retain the original scope/inventory on follow-ups.",
+     "source": {
+      "path": "api_funda_agent_exp.py",
+      "symbol": "_run",
+      "start_line": 222,
+      "end_line": 391
+     }
+    }
+   ]
+  },
+  {
+   "id": "tool_schema",
+   "condition": "Bound on every turn except the final step-budget turn, where the unbound llm is used instead.",
+   "branch_expressions": [
+    "model = llm.bind_tools(tools=tools, parallel_tool_calls=True)",
+    "active_model = llm if state['number_of_steps'] >= MAX_LLM_STEPS - 1 else model"
+   ],
+   "sink": "funda_agent_exp.call_model -> active_model.invoke",
+   "steps": [
+    {
+     "source": "tool_prompts",
+     "action": "defines each tool description constant"
+    },
+    {
+     "source": "funda_agent_exp",
+     "action": "assigns the constant to the function's __doc__ before wrapping it"
+    },
+    {
+     "source": "langchain_core.tools.tool",
+     "action": "reads __doc__ as the tool description and the args_schema as parameters"
+    },
+    {
+     "source": "funda_agent_exp.build_tools",
+     "action": "returns the five registered tools"
+    },
+    {
+     "source": "funda_agent_exp.model",
+     "action": "binds them onto the chat model"
+    }
+   ],
+   "instruction_ids": [
+    "instruction:funda_agent_exp.ClusterInput",
+    "instruction:funda_agent_exp.InfluenceVariable",
+    "instruction:funda_agent_exp.PLSRInput",
+    "instruction:funda_agent_exp.SurveyAnalysisPacketInput",
+    "instruction:funda_agent_exp.WordCloudInput",
+    "instruction:tool_prompts.ANALYZE_PLSR_DESCRIPTION",
+    "instruction:tool_prompts.CLUSTER_RATING_PROFILES_DESCRIPTION",
+    "instruction:tool_prompts.GENERATE_WORD_CLOUD_DESCRIPTION",
+    "instruction:tool_prompts.GET_SURVEY_ANALYSIS_PACKET_DESCRIPTION",
+    "instruction:tool_prompts.NL2SQL_TOOL_DESCRIPTION",
+    "instruction:tool_prompts.RUN_SURVEY_STATS_DESCRIPTION"
+   ],
+   "dynamic_builders": []
+  },
+  {
+   "id": "tool_result",
+   "condition": "After any tool call. call_tool builds one ToolMessage per call and may prepend SQL progress warnings to the first SQL result.",
+   "branch_expressions": [
+    "results[first_sql_index] = '\\n'.join(warnings) + '\\n' + results[first_sql_index]",
+    "if repeated: warnings.append(REPEATED_SQL_WARNING)",
+    "if zero_streak >= 2: warnings.append(zero_row_streak_warning(zero_streak))",
+    "outputs = [ToolMessage(content=result, name=tc['name'], tool_call_id=tc.get('id','')) ...]"
+   ],
+   "sink": "funda_agent_exp.call_tool -> ToolMessage -> call_model -> active_model.invoke",
+   "steps": [
+    {
+     "source": "funda_agent_exp._invoke_tool_call",
+     "action": "runs one tool and normalizes its return to a string"
+    },
+    {
+     "source": "tool_prompts",
+     "action": "supplies the success, rejection and failure text each tool returns"
+    },
+    {
+     "source": "funda_agent_exp.call_tool",
+     "action": "validates artifact envelopes and substitutes guidance where needed"
+    },
+    {
+     "source": "funda_agent_exp.call_tool",
+     "action": "prepends repeat and zero-row warnings to the first SQL result"
+    },
+    {
+     "source": "funda_agent_exp.call_tool",
+     "action": "emits one ToolMessage per call, preserving call order"
+    }
+   ],
+   "instruction_ids": [
+    "instruction:agent_instructions.REPEATED_SQL_WARNING",
+    "instruction:agent_instructions.zero_row_streak_warning",
+    "instruction:funda_agent_exp._base_composition_hint",
+    "instruction:funda_agent_exp.analyze_plsr.unavailability",
+    "instruction:funda_agent_exp.call_tool.artifact_validation",
+    "instruction:funda_agent_exp.cluster_rating_profiles.unavailability",
+    "instruction:funda_agent_exp.nl2sql_tool.survey_boundary_refusal",
+    "instruction:funda_agent_exp.run_survey_stats.scope_refusals",
+    "instruction:funda_agent_exp.run_survey_stats.underpowered_correlations",
+    "instruction:tool_prompts.ANALYSIS_PACKET_RESULT_HEAD",
+    "instruction:tool_prompts.BIG_SQL_CHARS",
+    "instruction:tool_prompts.CLUSTER_RESULT_HEAD",
+    "instruction:tool_prompts.NON_SELECT_RESULT",
+    "instruction:tool_prompts.PACKET_SCOPE_CHECK_FAILED",
+    "instruction:tool_prompts.PACKET_SCOPE_UNAVAILABLE",
+    "instruction:tool_prompts.PLSR_RESULT_HEAD",
+    "instruction:tool_prompts.REJECT_BATCH",
+    "instruction:tool_prompts.REJECT_NOT_SELECT",
+    "instruction:tool_prompts.SEMANTIC_FILTER_REASON",
+    "instruction:tool_prompts.SQL_ERROR_HINTS",
+    "instruction:tool_prompts.STATS_TIMEOUT",
+    "instruction:tool_prompts.WORD_CLOUD_SCOPE_UNAVAILABLE",
+    "instruction:tool_prompts.ZERO_ROW_HEAD",
+    "instruction:tool_prompts.ZERO_ROW_MSG",
+    "instruction:tool_prompts._PACKET_UNAVAILABLE_REASONS",
+    "instruction:tool_prompts.analysis_packet_preamble",
+    "instruction:tool_prompts.cluster_bad_k",
+    "instruction:tool_prompts.cluster_bad_question_id",
+    "instruction:tool_prompts.cluster_mixed_scales",
+    "instruction:tool_prompts.cluster_multi_product",
+    "instruction:tool_prompts.cluster_no_data",
+    "instruction:tool_prompts.cluster_summary_measure",
+    "instruction:tool_prompts.cluster_too_few_questions",
+    "instruction:tool_prompts.cluster_unsupported_type",
+    "instruction:tool_prompts.error_hint",
+    "instruction:tool_prompts.multi_statement_error",
+    "instruction:tool_prompts.packet_bad_survey_id",
+    "instruction:tool_prompts.packet_not_available",
+    "instruction:tool_prompts.packet_survey_out_of_scope",
+    "instruction:tool_prompts.packet_unknown_survey",
+    "instruction:tool_prompts.scope_repair_note",
+    "instruction:tool_prompts.sql_failure",
+    "instruction:tool_prompts.stats_bad_question_id",
+    "instruction:tool_prompts.stats_bad_reference_id",
+    "instruction:tool_prompts.stats_http_error",
+    "instruction:tool_prompts.stats_missing_reference",
+    "instruction:tool_prompts.stats_request_failed",
+    "instruction:tool_prompts.tool_error",
+    "instruction:tool_prompts.unknown_tool",
+    "instruction:tool_prompts.wide_result_note",
+    "instruction:tool_prompts.word_cloud_bad_question_id",
+    "instruction:tool_prompts.word_cloud_question_unavailable",
+    "instruction:tool_prompts.word_cloud_ready"
+   ],
+   "dynamic_builders": [
+    {
+     "builder": "funda_agent_exp._invoke_tool_call",
+     "delivered_via": "tool_result",
+     "condition": "Every tool call",
+     "content": "Tool return values: query rows, statistics payloads, packet contents, and exception text.",
+     "source": {
+      "path": "funda_agent_exp.py",
+      "symbol": "_invoke_tool_call",
+      "start_line": 3522,
+      "end_line": 3532
+     }
+    }
+   ]
+  },
+  {
+   "id": "assistant_final_message",
+   "condition": "Final-message post-processing or trusted-artifact assembly. These messages reach a model only if retained and replayed on a later round.",
+   "branch_expressions": [
+    "if _WORD_CLOUD_BLOCK_RE.search(...): final_text = prose + UNTRUSTED_WORD_CLOUD_BLOCK",
+    "withheld = '...' if chart_withheld else ''",
+    "response = response.model_copy(update={'content': ...})"
+   ],
+   "sink": "funda_agent_exp.call_model -> AIMessage -> checkpoint -> _trim_history on a later round",
+   "steps": [
+    {
+     "source": "funda_agent_exp._sanitize_model_chart_blocks",
+     "action": "withholds chart payloads that fail validation"
+    },
+    {
+     "source": "funda_agent_exp.call_model",
+     "action": "substitutes the withheld-chart or untrusted-word-cloud text into the response"
+    },
+    {
+     "source": "funda_agent_exp._trim_history",
+     "action": "replays the stored AIMessage on a subsequent round"
+    }
+   ],
+   "instruction_ids": [
+    "instruction:funda_agent_exp.call_model.chart_withheld_notice",
+    "instruction:tool_prompts.UNTRUSTED_WORD_CLOUD_BLOCK"
+   ],
+   "dynamic_builders": [
+    {
+     "builder": "funda_agent_exp.call_model",
+     "delivered_via": "assistant_final_message",
+     "condition": "A trusted word-cloud artifact returns without a model call; trusted PCA artifacts are assembled after a tool-free model response. Stored final messages can be replayed on a later round.",
+     "content": "Validated chart/word-cloud artifacts and their assembled final answer; only retained history reaches a later model invocation.",
+     "source": {
+      "path": "funda_agent_exp.py",
+      "symbol": "call_model",
+      "start_line": 3838,
+      "end_line": 3902
+     }
+    },
+    {
+     "builder": "funda_agent_exp.call_model",
+     "delivered_via": "assistant_final_message",
+     "condition": "A trusted word-cloud artifact returns without a model call; trusted PCA artifacts are assembled after a tool-free model response. Stored final messages can be replayed on a later round.",
+     "content": "Validated chart/word-cloud artifacts and their assembled final answer; only retained history reaches a later model invocation.",
+     "source": {
+      "path": "funda_agent_exp.py",
+      "symbol": "call_model",
+      "start_line": 3838,
+      "end_line": 3902
+     }
+    },
+    {
+     "builder": "funda_agent_exp.call_model",
+     "delivered_via": "assistant_final_message",
+     "condition": "A trusted word-cloud artifact returns without a model call; trusted PCA artifacts are assembled after a tool-free model response. Stored final messages can be replayed on a later round.",
+     "content": "Validated chart/word-cloud artifacts and their assembled final answer; only retained history reaches a later model invocation.",
+     "source": {
+      "path": "funda_agent_exp.py",
+      "symbol": "call_model",
+      "start_line": 3838,
+      "end_line": 3902
+     }
+    },
+    {
+     "builder": "funda_agent_exp.call_model",
+     "delivered_via": "assistant_final_message",
+     "condition": "A trusted word-cloud artifact returns without a model call; trusted PCA artifacts are assembled after a tool-free model response. Stored final messages can be replayed on a later round.",
+     "content": "Validated chart/word-cloud artifacts and their assembled final answer; only retained history reaches a later model invocation.",
+     "source": {
+      "path": "funda_agent_exp.py",
+      "symbol": "call_model",
+      "start_line": 3838,
+      "end_line": 3902
+     }
+    }
+   ]
+  }
+ ],
+ "concepts": [
+  {
+   "id": "concept:answer-formatting",
+   "summary": "How the final answer is shaped: nested results, bases, sample sizes and caveats.",
+   "aliases": [
+    "answer format",
+    "final answer",
+    "nested json",
+    "output format",
+    "reporting",
+    "tables"
+   ],
+   "facet_labels": [
+    "result-formatting"
+   ],
+   "workflow_ids": [
+    "workflow:answer-formatting"
+   ]
+  },
+  {
+   "id": "concept:benchmarking",
+   "summary": "Comparison against the survey's assigned benchmark, including the cross-client exception.",
+   "aliases": [
+    "assigned benchmark",
+    "baseline comparison",
+    "benchmark",
+    "compare with benchmark",
+    "norm"
+   ],
+   "facet_labels": [
+    "benchmarking",
+    "cross-survey-analysis"
+   ],
+   "workflow_ids": [
+    "workflow:survey-benchmarking"
+   ]
+  },
+  {
+   "id": "concept:error-recovery",
+   "summary": "Tool rejections, database failures and empty results returned as repairable feedback.",
+   "aliases": [
+    "empty result",
+    "error",
+    "error handling",
+    "failure",
+    "retry",
+    "tool error",
+    "zero rows"
+   ],
+   "facet_labels": [
+    "error-recovery",
+    "zero-row-diagnosis"
+   ],
+   "workflow_ids": [
+    "workflow:tool-error-recovery"
+   ]
+  },
+  {
+   "id": "concept:output-form-guardrail",
+   "summary": "Requests for code, scripts or queries as a deliverable, and which fenced forms may leave the agent at all.",
+   "aliases": [
+    "code",
+    "code request",
+    "no code",
+    "program text",
+    "python script",
+    "show me the sql",
+    "write a script",
+    "write code"
+   ],
+   "facet_labels": [
+    "output-form-guardrail",
+    "result-formatting"
+   ],
+   "workflow_ids": [
+    "workflow:answer-formatting"
+   ]
+  },
+  {
+   "id": "concept:persona",
+   "summary": "Persona, consumer persona and respondent-profile answers.",
+   "aliases": [
+    "consumer persona",
+    "persona",
+    "respondent profile",
+    "segment profile"
+   ],
+   "facet_labels": [
+    "persona-synthesis"
+   ],
+   "workflow_ids": [
+    "workflow:persona-generation"
+   ]
+  },
+  {
+   "id": "concept:plsr-analysis",
+   "summary": "Ranking attributes against a KPI by VIP on product means, via partial least squares.",
+   "aliases": [
+    "attribution",
+    "drivers",
+    "key drivers",
+    "partial least squares",
+    "plsr",
+    "vip"
+   ],
+   "facet_labels": [
+    "plsr-analysis"
+   ],
+   "workflow_ids": [
+    "workflow:statistical-analysis"
+   ]
+  },
+  {
+   "id": "concept:progress-memory",
+   "summary": "The per-turn sourced progress ledger and the step budget that ends the loop.",
+   "aliases": [
+    "ledger",
+    "max steps",
+    "progress",
+    "progress memory",
+    "step budget"
+   ],
+   "facet_labels": [
+    "progress-memory",
+    "step-budget"
+   ],
+   "workflow_ids": [
+    "workflow:step-budget-and-progress"
+   ]
+  },
+  {
+   "id": "concept:respondent-clustering",
+   "summary": "Grouping respondents by the shape of their ratings across attributes, by k-means.",
+   "aliases": [
+    "cluster",
+    "clustering",
+    "clusters",
+    "k-means",
+    "kmeans",
+    "rating profile",
+    "respondent groups",
+    "respondent clusters"
+   ],
+   "facet_labels": [
+    "respondent-clustering"
+   ],
+   "workflow_ids": [
+    "workflow:respondent-clustering"
+   ]
+  },
+  {
+   "id": "concept:scope-enforcement",
+   "summary": "Tenant and survey boundary rules: which client, organization and survey a run may read.",
+   "aliases": [
+    "authorization",
+    "client boundary",
+    "multi-tenant",
+    "out of scope",
+    "scope",
+    "survey boundary",
+    "tenant isolation"
+   ],
+   "facet_labels": [
+    "cross-survey-analysis",
+    "scope-enforcement"
+   ],
+   "workflow_ids": [
+    "workflow:scope-authorization"
+   ]
+  },
+  {
+   "id": "concept:sql-generation",
+   "summary": "Writing the read-only scoped SELECT the nl2sql tool runs, and the dialect limits on it.",
+   "aliases": [
+    "dialect",
+    "nl2sql",
+    "postgres",
+    "query",
+    "sql",
+    "text to sql"
+   ],
+   "facet_labels": [
+    "schema-reference",
+    "sql-dialect-rules",
+    "sql-generation"
+   ],
+   "workflow_ids": [
+    "workflow:sql-retrieval"
+   ]
+  },
+  {
+   "id": "concept:startup-inventory",
+   "summary": "The pre-fetched survey analysis packet injected into turn 0.",
+   "aliases": [
+    "analysis packet",
+    "inventory",
+    "packet",
+    "prefetch",
+    "startup inventory"
+   ],
+   "facet_labels": [
+    "survey-analysis-packet"
+   ],
+   "workflow_ids": [
+    "workflow:startup-inventory"
+   ]
+  },
+  {
+   "id": "concept:statistics",
+   "summary": "Significance testing: anova, tukey, pearson, spearman, chi-square and pca.",
+   "aliases": [
+    "anova",
+    "chi-square",
+    "correlation",
+    "pca",
+    "significance",
+    "statistics",
+    "tukey"
+   ],
+   "facet_labels": [
+    "statistical-testing"
+   ],
+   "workflow_ids": [
+    "workflow:statistical-analysis"
+   ]
+  },
+  {
+   "id": "concept:word-cloud",
+   "summary": "Word clouds over open-ended answers and the trusted artifact fence around them.",
+   "aliases": [
+    "open ends",
+    "tag cloud",
+    "verbatims",
+    "word cloud"
+   ],
+   "facet_labels": [
+    "chart-rendering",
+    "word-cloud"
+   ],
+   "workflow_ids": [
+    "workflow:word-cloud-generation"
+   ]
+  }
+ ],
+ "workflows": [
+  {
+   "id": "workflow:answer-formatting",
+   "summary": "Shapes the final answer: nested result blocks, narrative reporting, bases, and withheld-artifact notices.",
+   "entry_facets": [
+    "result-formatting"
+   ],
+   "related_facets": [
+    "agent-identity",
+    "chart-rendering",
+    "output-form-guardrail",
+    "persona-synthesis",
+    "plsr-analysis",
+    "statistical-testing",
+    "word-cloud"
+   ]
+  },
+  {
+   "id": "workflow:persona-generation",
+   "summary": "Governs persona and respondent-profile requests, from required retrievals to the allowed output shape.",
+   "entry_facets": [
+    "persona-synthesis"
+   ],
+   "related_facets": [
+    "result-formatting",
+    "sql-generation",
+    "statistical-testing"
+   ]
+  },
+  {
+   "id": "workflow:respondent-clustering",
+   "summary": "Clusters respondents on their attribute rating profiles and reports each cluster's dominant ranges, stability and product mix.",
+   "entry_facets": [
+    "respondent-clustering"
+   ],
+   "related_facets": [
+    "error-recovery",
+    "output-form-guardrail",
+    "persona-synthesis",
+    "result-formatting",
+    "statistical-testing",
+    "tool-argument-guidance"
+   ]
+  },
+  {
+   "id": "workflow:scope-authorization",
+   "summary": "Binds every query to the run's client and survey, and refuses or discloses anything outside it.",
+   "entry_facets": [
+    "scope-enforcement"
+   ],
+   "related_facets": [
+    "benchmarking",
+    "cross-survey-analysis",
+    "error-recovery",
+    "schema-reference",
+    "sql-generation"
+   ]
+  },
+  {
+   "id": "workflow:sql-retrieval",
+   "summary": "Turns a question into one read-only scoped SELECT, then repairs, rejects or diagnoses the result.",
+   "entry_facets": [
+    "sql-dialect-rules",
+    "sql-generation"
+   ],
+   "related_facets": [
+    "error-recovery",
+    "result-formatting",
+    "schema-reference",
+    "scope-enforcement",
+    "zero-row-diagnosis"
+   ]
+  },
+  {
+   "id": "workflow:startup-inventory",
+   "summary": "Pre-fetches and explains one survey's analysis packet so turn 0 already holds its measures.",
+   "entry_facets": [
+    "survey-analysis-packet"
+   ],
+   "related_facets": [
+    "benchmarking",
+    "cross-survey-analysis",
+    "error-recovery",
+    "result-formatting",
+    "scope-enforcement"
+   ]
+  },
+  {
+   "id": "workflow:statistical-analysis",
+   "summary": "Runs significance tests and PLSR, then reports them with their limits.",
+   "entry_facets": [
+    "plsr-analysis",
+    "statistical-testing"
+   ],
+   "related_facets": [
+    "error-recovery",
+    "result-formatting",
+    "scope-enforcement",
+    "tool-argument-guidance"
+   ]
+  },
+  {
+   "id": "workflow:step-budget-and-progress",
+   "summary": "Keeps a sourced progress ledger across turns and forces a grounded answer when the step budget ends.",
+   "entry_facets": [
+    "progress-memory",
+    "step-budget"
+   ],
+   "related_facets": [
+    "result-formatting",
+    "sql-generation"
+   ]
+  },
+  {
+   "id": "workflow:survey-benchmarking",
+   "summary": "Resolves the assigned benchmark survey, authorizes the cross-client exception, and handles its absence.",
+   "entry_facets": [
+    "benchmarking"
+   ],
+   "related_facets": [
+    "cross-survey-analysis",
+    "scope-enforcement",
+    "survey-analysis-packet"
+   ]
+  },
+  {
+   "id": "workflow:tool-error-recovery",
+   "summary": "Returns rejections, hints and failures to the model as repairable feedback instead of ending the run.",
+   "entry_facets": [
+    "error-recovery"
+   ],
+   "related_facets": [
+    "scope-enforcement",
+    "sql-dialect-rules",
+    "statistical-testing",
+    "word-cloud",
+    "zero-row-diagnosis"
+   ]
+  },
+  {
+   "id": "workflow:word-cloud-generation",
+   "summary": "Builds word clouds only through the tool and fails closed on model-authored or invalid artifacts.",
+   "entry_facets": [
+    "word-cloud"
+   ],
+   "related_facets": [
+    "chart-rendering",
+    "error-recovery",
+    "result-formatting",
+    "scope-enforcement"
+   ]
+  }
+ ],
+ "coverage": {
+  "status": "complete",
+  "scope": "funda_agent_exp.py and api_funda_agent_exp.py entrypoints and their model-facing first-party import closure",
+  "strategy": "single-map",
+  "included_roots": [
+   "agent_instructions.py",
+   "api_funda_agent_exp.py",
+   "funda_agent_exp.py",
+   "tool_prompts.py"
+  ],
+  "excluded_roots": [
+   "deployment/",
+   "docs/",
+   "not_used/",
+   "output_store.py",
+   "plsr.py",
+   "scripts/",
+   "tests/"
+  ],
+  "unresolved_scopes": []
+ }
+}
