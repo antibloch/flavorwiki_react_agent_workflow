@@ -1,190 +1,339 @@
-# final_agent_work
+# flavorwiki_react_agent_workflow
 
-Everything needed to run, serve, benchmark and understand **`funda_agent_exp.py`** — the LangGraph
-survey-analyst agent — copied out of `flavorai_v2` as a self-contained bundle.
+A LangGraph **ReAct agent that answers natural-language questions about FlavorWiki survey
+data**, plus the engineering workflow this repo exists to document: how the agent is built,
+how it is patched when it goes wrong, and how every patch is graded before release.
+
+Three layers, three entry points:
+
+| Layer | What it is | Where |
+|---|---|---|
+| **The agent** | A guarded ReAct loop over a read-only PostgreSQL survey database and a Charts statistics API | [`funda_agent_exp.py`](funda_agent_exp.py), [`docs/agent_exp_doc.md`](docs/agent_exp_doc.md) |
+| **The patch workflow** | A gated, evidence-driven procedure (steps 0–6) for diagnosing and fixing agent defects | [`PROTOCOL.md`](PROTOCOL.md) |
+| **The evaluation skills** | Claude Code procedures that derive ground truth and grade every fix independently | [`skills/`](skills/) |
+
+The core principle, in one sentence: **the model decides what a question means and which
+evidence to retrieve; deterministic Python controls scope, SQL safety, tool execution,
+grading and termination.**
 
 ---
 
-## ⚠️ Before this leaves your machine
+## 1. What the agent can do
 
-`funda_agent_exp.py` **hardcodes live credentials** at lines 56–61: an OpenAI API key, the
-`DATABASE_URI`, and the Charts API secret. `os.getenv` still wins, so a real `.env` overrides
-them, but the literals are in the file and are now in this bundle too.
-
-They are also already in the git history of the source repo, so **rotating them is required
-before this is shared, deployed, or pushed anywhere** — deleting the lines is not sufficient.
-
-Related: `api_funda_agent_exp.py` has **no authentication**. Anything that can reach the port can
-query the database through it. Do not expose it publicly without putting auth in front.
+- Answer survey questions through **read-only PostgreSQL queries** (guarded `SELECT`/`WITH` only).
+- Serve from a **precomputed inventory** — products, scored measures, per-product means/SDs —
+  attached to the first turn so most questions need no SQL at all.
+- Retrieve the same packet for an **authorized historical or benchmark survey**.
+- Call the **Charts API** for ANOVA, Tukey, Pearson, Spearman and chi-square results.
+- Run **PLSR** (driver analysis: which measures drive which attribute) and **respondent
+  clustering** over attribute-rating profiles.
+- Produce **evidence-grounded personas** from categorical responses.
+- Emit **trusted chart artifacts** (word clouds, PCA scatter) that never pass through
+  model-authored text — the harness splices them in at final assembly.
+- Keep **short-term conversation memory** via a checkpointed graph and repeated `thread_id`.
 
 ---
 
-## Layout
+## 2. Architecture
+
+### 2.1 Modules
 
 ```
-funda_agent_exp.py            the agent — LangGraph ReAct loop, tools and progress memory
-api_funda_agent_exp.py        FastAPI wrapper, token-by-token NDJSON streaming
-
-agent_instructions.py         system/schema/inventory/scope/loop instructions
-tool_prompts.py               tool descriptions and tool-returned feedback
-
-openapi.json                  exported API schema (hand to the frontend with docs/API_CONTRACT.md)
-requirements.txt              pinned versions the measurements in docs/ were taken on
-regression.xlsx               90 rows: the original 33, plus 57 debugging/benchmark cases
-funda_agent_exp_oracle_duo.py reference build — the pre-memory baseline.  DO NOT EDIT.
-
-docs/     agent_exp_doc.md          the main documentation — architecture, prompts, guardrails
-          API_CONTRACT.md           frontend integration: endpoints, events, suggestion buttons
-          emp_findings.md           empirical findings across all experiments
-          needle_haystack_*.md      benchmark test set and write-up
-
-scripts/  ask_stream.py             streaming client — POSTs to the API, prints tokens as they arrive
-          find_bigoutput.py         which survey+question combinations park (no LLM calls)
-          bench_bigoutput.py        one large-output case, one arm
-          run_condenser_ab.sh       workflow vs agent condenser A/B
-          score_condenser_ab.py     scores that A/B against live SQL ground truth
-          evaluate_routing_removal.py validates the single-model/full-prompt migration
-          check_suggestions.py      asserts the {{suggestion}} contract the UI parses
-          bench_memory*.py/.sh      short-term-memory latency and faithfulness
-          bench_prefetch.py         inventory pre-fetch ablation
-          bench_api_overhead.py     streaming on/off A/B through the HTTP layer
-          bench_regression_exp.py   regression.xlsx sweep
+┌─────────────────────┐   ┌─────────────────────┐
+│ agent_instructions.py│   │   tool_prompts.py    │   every model-facing string lives here:
+│  system prompt, rule │   │ tool descriptions,   │   behavioural rules in the left module,
+│  blocks, scope pre-  │   │ feedback & rejection │   "what a tool is for" in the right one
+│  ambles, notices     │   │ text                 │
+└──────────┬──────────┘   └──────────┬──────────┘
+           │  imported as constants  │
+           ▼                         ▼
+┌─────────────────────────────────────────────────┐
+│               funda_agent_exp.py                │  LangGraph graph, AgentState, tools,
+│  (the agent runtime)                            │  inventory + cache, DB access, scope/
+└──────────────────────┬──────────────────────────┘  authorization, history trimming, CLI
+                       │ same graph, same tools
+                       ▼
+┌─────────────────────────────────────────────────┐
+│            api_funda_agent_exp.py               │  FastAPI / NDJSON streaming wrapper,
+│  (HTTP entry point for the container)           │  API scope resolution, checkpoints
+└─────────────────────────────────────────────────┘
 ```
 
-## Where the prompts live
+`funda_agent_exp.py` also carries the numeric engines' callers; the engines themselves
+([`plsr.py`](plsr.py), [`clustering.py`](clustering.py)) are dependency-free (numpy only) so
+tests can drive them without an LLM or a database.
 
-Every string the model reads comes from exactly two structured modules. `agent_instructions.py`
-contains the persona, task, schema, system prompt, inventory preamble, scope text and loop
-instructions. `tool_prompts.py` contains both tool descriptions and the feedback tools return.
-The agent imports both directly and contains no model-facing text of its own.
+### 2.2 Graph topology
 
-The current survey's startup inventory and the typed `get_survey_analysis_packet(survey_id)`
-tool share one packet contract and process-local LRU cache. The on-demand tool is restricted to
-the current survey, a survey in the current organization, or the configured fixed benchmark;
-historical survey discovery still happens through scoped SQL. Mutable packets use
-`INVENTORY_CACHE_ACTIVE_TTL_S`, closed/archived packets use
-`INVENTORY_CACHE_CLOSED_TTL_S`, and the fixed benchmark uses
-`INVENTORY_CACHE_BENCHMARK_TTL_S` (24 hours by default).
+Two nodes, one conditional edge. `MAX_LLM_STEPS = 12` counts **LLM invocations**.
 
-## Setup
+```
+                     tool calls present
+      ┌────────────┐ ───────────────────► ┌────────────┐
+START │    LLM     │                      │   tools    │
+ ───► │ call_model │ ◄─────────────────── │ call_tool  │
+      └──────┬─────┘      unconditional   └────────────┘
+             │
+             │ no tool calls, or step budget exhausted
+             ▼
+            END
+```
+
+On the twelfth (final) permitted turn, tools are deliberately **unbound** and a step-budget
+notice forces the model to synthesize from evidence already collected and disclose what is
+still unresolved. Always read the halt reason off a transcript: answered, budget-exhausted,
+or refused.
+
+### 2.3 Turn lifecycle and the guardrail chain
+
+```
+user question (scope ids injected into the USER message, never the system prompt)
+   │  inventory packet pre-fetched and appended (unless --no-inventory)
+   ▼
+call_model ──► plain answer ──────────────────────────────────────────► END
+   │
+   │ tool call(s)
+   ▼
+nl2sql_tool guardrails, in order:
+   scope-ID repair (≤ N edits, disclosed) → single-statement check → SELECT/WITH only
+   → semantic-filter rejection (no LIKE on prompt/label columns) → scope-parameter binding
+   → read-only transaction + 20 s statement timeout → JSON rows back to the model
+   ▼
+call_tool: one ToolMessage per call, zero-row streak tracking, repeated-query
+   fingerprinting, <progress_gathered> index persisted with the next AI message
+   ▼
+back to call_model …
+```
+
+Parallelism: the model may emit several tool calls in one response; `call_tool` executes a
+**homogeneous batch** of `nl2sql_tool` (or `run_survey_stats`) calls concurrently on a thread
+pool, consuming results in call order for a stable history. Mixed batches run sequentially.
+
+Memory is three independent mechanisms — do not confuse them: the **checkpoint**
+(`InMemorySaver`, per `thread_id`), **history trimming** (`_trim_history`, oldest complete
+rounds dropped), and **progress memory** (the model's own `<progress_gathered>` index into
+prior tool results — an index, never a substitute).
+
+### 2.4 Tools
+
+`build_tools()` is the **authoritative** list — a tool named in a prompt but absent from it is
+a dead promise. Six tools are currently bound:
+
+| Tool | What it does |
+|---|---|
+| `nl2sql_tool` | One guarded, read-only SQL statement per call; JSON array result |
+| `get_survey_analysis_packet` | Inventory packet for an authorized survey (current / same-org / fixed benchmark), tenancy checked server-side |
+| `run_survey_stats` | Charts API: ANOVA, Tukey, Pearson, Spearman, chi-square; provenance notice for non-current surveys |
+| `analyze_plsr` | PLS1 driver analysis (NIPALS, VIP scores) over question-level measures |
+| `cluster_rating_profiles` | k-means over respondent attribute-rating profiles |
+| `generate_word_cloud` | Deterministic term counts from an open-ended question; the chart payload is parked in state and spliced into the final answer, never through the model |
+
+(An older section of [`docs/agent_exp_doc.md`](docs/agent_exp_doc.md) still says "five tools";
+the code wins — check `build_tools()` before trusting any doc on this point.)
+
+### 2.5 Prompts and the prompt map
+
+The system prompt is a **pure function of config** — byte-identical across surveys, so it stays
+a stable prompt-cache prefix. Per-run ids arrive in the user message instead.
+
+Every model-facing fragment is inventoried in
+[`docs/generated/agent-prompt-map.md`](docs/generated/agent-prompt-map.md) /
+[`.json`](docs/generated/agent-prompt-map.json): source symbol, line range, delivery path,
+inclusion condition. Prompt edits are located through the map, never by eyeballing paragraphs.
+
+---
+
+## 3. Patching the agent when it gets problems — `PROTOCOL.md`
+
+Every change to the agent follows one gated workflow. Nothing skips a gate.
+
+```mermaid
+flowchart TD
+    S0["Step 0 · DIAGNOSE<br/>trace the actual run's boundary chain,<br/>form competing hypotheses, test a<br/>discrimination probe"]
+    S1["Step 1 · FIX<br/>precision-strike minimal change<br/>(prompt map locates the fragment;<br/>check used_by blast radius)"]
+    S2["Step 2 · UNIT GATE<br/>.venv/bin/python -m unittest<br/>numeric engines + harness invariants"]
+    S3["Step 3 · PROBE GATE<br/>one run: the fix probe + a regression<br/>probe from regression.xlsx,<br/>manifests record source hashes"]
+    S4["Step 4 · GRADE<br/>ISOLATED grader — a session that did<br/>not write the fix grades content<br/>and trajectory; never inline"]
+    S5{"Step 5 · USER APPROVAL<br/>the human gate"}
+    S6["Step 6 · SYNC + COMMIT<br/>mirror into deployment/ under the<br/>sync contract; push is the user's call"]
+
+    S0 --> S1 --> S2 --> S3 --> S4 --> S5 --> S6
+    S4 -- "CONTRADICTS / FAIL" --> S0
+    S5 -- "changes requested" --> S0
+```
+
+Key disciplines the diagram encodes:
+
+- **Step 0 is a boundary chain, not a guess.** You localize the failure along the actual
+  information path before touching anything, and a hypothesis is only accepted if a probe
+  *discriminates* it from the competitors (see 3.1).
+- **Step 1 is minimal.** The prompt map identifies the exact record; `used_by` /
+  `composed_from` reveal every other consumer of the same fragment before its meaning changes.
+- **Step 4 can never be the fixing session.** Grading in the context that wrote the fix is
+  narration, not evidence.
+- **Step 6 never happens before Step 5.** Nothing is written into `deployment/` until the user
+  has run and approved the change.
+
+### 3.1 The boundary chain — where a wrong value actually came from
+
+```
+prompt rule present?          ← agent_instructions.py / tool_prompts.py (check the map)
+   ▼
+model decision                ← which tool, which SQL, which question id
+   ▼
+tool + arguments              ← pydantic schema, UUIDs
+   ▼
+inside the tool               ← guardrail rejection? scope repair? authorization?
+   │                            DB rows? Charts API? normalization/rounding?
+   ▼
+output ownership              ← model-authored text, or trusted artifact spliced by harness?
+   ▼
+state / memory                ← stale scratch fields? trimming? progress index?
+   ▼
+final response → sanitizer / assembly → transport (CLI vs API streaming)
+
+axis, parallel to every stage: halt reason — answered · budget-exhausted · refused
+```
+
+Each region has exactly one owning component. "The answer was wrong" is not a diagnosis;
+"the second SQL call bound the wrong question id because the inventory listed a pooled
+attribute" is. **The first thing on the chain that can explain the observation is where the
+fix belongs** — and prompt rules are only one link. A matching rule, a shared workflow or a
+present instruction proves relevance, not causation; the discrimination probe establishes the
+causal claim or you record the hypothesis as unproven.
+
+### 3.2 The grading system — `skills/` (Claude Code workflow)
+
+Three independent judge procedures plus a prompt-map builder. The architecture is a strict
+separation between **producing** ground truth and **judging** the agent against it:
+
+```mermaid
+flowchart LR
+    subgraph producer["oracle_agent (producer — grades nothing)"]
+        GT["Phases 0–5: derive ground-truth answer<br/>from gpi-db + Charts API"]
+        REF["Phase 6: reference trace over the<br/>agent's own tool vocabulary"]
+    end
+    AGENT["agent run<br/>(capture_agent.py + probe manifest)"]
+
+    GT --> C["trace_compare · CONTENT judge<br/>A1–A5: numbers, entities,<br/>coverage, claims, refusals"]
+    REF --> T["trace_compare · TRAJECTORY judge<br/>B1–B7: capability-matched<br/>retrieval path, not call-by-call"]
+    AGENT --> C & T
+    AGENT --> K["contract_review · BEHAVIOUR judge<br/>presentation + rule compliance,<br/>causal SUPPORTS / CONTRADICTS /<br/>INCONCLUSIVE on step 0's hypothesis"]
+
+    style producer fill:#eef,stroke:#557
+```
+
+| Skill | Role | What it may and may not do |
+|---|---|---|
+| [`oracle_agent`](skills/oracle_agent/SKILL.md) | Producer | Derives the ground-truth answer and the reference trajectory; **judges nothing** |
+| [`trace_compare`](skills/trace_compare/SKILL.md) | Judge | Scores **content** against the ground truth and **trajectory** against the reference, in two separate blocks; **never re-derives** evidence |
+| [`contract_review`](skills/contract_review/SKILL.md) | Judge | Grades presentation/behaviour only, plus causal localization of the failure; **never grades content numbers** |
+| [`agent-prompt-mapper`](skills/agent-prompt-mapper/SKILL.md) | Tooling | Rebuilds the prompt map after any model-facing edit |
+
+Invariants that make the evidence trustworthy:
+
+- The **producer never judges; the judges never derive; the fixing session never grades.**
+- Trajectories are compared by **capability, not call count** — the oracle's `query.sh` and
+  the agent's `nl2sql_tool` are the same *act*; extra agent steps are only defects if they
+  change content or repeat a failed retrieval.
+- **One run is the budget** for a graded probe; each oracle script auto-logs its retrieval
+  step when `ORACLE_TRACE_FILE` is set, so the trajectory is machine truth, not narration.
+- **Truncated ≠ absent** in transcripts (500/1000-char limits): a grader must record a
+  limitation rather than grade against unseen content.
+
+### 3.3 Evidence bookkeeping
+
+Every case leaves a paper trail, so a "fixed" claim is always checkable:
+
+- `regression.xlsx` — probes that ever caught a defect are **promoted** into a Suite/Case row.
+- `probe_scratchpad.md` — the case record: hypothesis, probes, manifests (source hashes bind
+  each run to an exact revision), grader verdicts, and any **accepted exceptions**.
+- Generated prompt-map records keep instruction edits traceable to symbols and line ranges.
+
+### 3.4 The sync contract (working tree → `deployment/`)
+
+`deployment/` is the deployable copy of the same agent with deliberately **different
+configuration handling**. Agent behaviour must stay identical; configuration must stay
+divergent.
+
+```
+┌────────────────────────┬────────────────────────────────────────────────────┐
+│ category               │ rule                                               │
+├────────────────────────┼────────────────────────────────────────────────────┤
+│ core agent code        │ always-sync; must remain byte-identical between    │
+│ (5 model-facing files) │ the trees — verified by hash, not by memory        │
+├────────────────────────┼────────────────────────────────────────────────────┤
+│ config-band files      │ NEVER `cp`. Apply the same edit as an anchored     │
+│ (env/secret handling    │ patch (assert the old text occurs exactly once);   │
+│  differs by design)    │ the trees' configuration blocks stay divergent     │
+├────────────────────────┼────────────────────────────────────────────────────┤
+│ local-only             │ tests/, scripts/, skills/, docs/ (incl. the prompt │
+│                        │ map), PROTOCOL.md, regression.xlsx, probes,        │
+│                        │ docker-compose — none of it belongs in deployment/ │
+├────────────────────────┼────────────────────────────────────────────────────┤
+│ never                  │ any .env, DB URI, credential or hardcoded key in   │
+│                        │ deployment/ — environment variables only           │
+└────────────────────────┴────────────────────────────────────────────────────┘
+```
+
+And the order is fixed: **change in the working tree → the user runs it and approves → only
+then sync to `deployment/` → push is the user's call.**
+
+---
+
+## 4. Quick start
 
 ```bash
+# 1. Local database (Docker container, port 5433)
+docker start gpi-db            # or: docker compose up -d
+
+# 2. Environment (numpy is the ONLY numeric dependency — no pandas/sklearn/scipy)
 python -m venv .venv && . .venv/bin/activate
 pip install -r requirements.txt
-```
+# .env: OPENAI_API_KEY, DATABASE_URL, CHARTS_API_BASE_URL + secret header
+#       (read from the environment — nothing is hardcoded anymore)
 
-The agent needs **PostgreSQL** at `DATABASE_URI`. In the source repo that is a docker container
-on port 5433 restored from `BE/db/updated_dump.sql`:
+# 3. Ask one scoped question
+.venv/bin/python funda_agent_exp.py \
+  --survey-id 6263cf71-23b7-4462-9ccf-4a00a7267672 \
+  --prompt "Sort the products by overall liking."
 
-```bash
-docker compose up -d postgres        # from the flavorai_v2 repo; ~5 min to restore
-```
-
-**Redis is not required.** An older comment in `funda_agent_exp.py:72` says parked results go to
-Redis; the module actually imported is `output_store.py`, which keeps them in an in-process
-`OrderedDict` bounded by `MAX_STORED_RESULTS=32`. Nothing here connects to Redis.
-
-## Usage
-
-**One question:**
-
-```bash
-python funda_agent_exp.py --prompt "Which product scored highest on overall liking?" \
+# 4. Multi-turn memory on one thread
+.venv/bin/python funda_agent_exp.py --chat --thread-id session-1 \
   --survey-id 6263cf71-23b7-4462-9ccf-4a00a7267672
-```
 
-**Multi-turn conversation** (memory is per `--thread-id`):
-
-```bash
-python funda_agent_exp.py --chat --thread-id demo \
-  --survey-id 6263cf71-23b7-4462-9ccf-4a00a7267672
-```
-
-**Server:**
-
-```bash
+# 5. HTTP server
 uvicorn api_funda_agent_exp:app --host 0.0.0.0 --port 8000
+
+# 6. Offline tests (no LLM, no DB — the fast gate of step 2)
+.venv/bin/python -m unittest tests.test_plsr tests.test_clustering -q
 ```
 
-**Streaming client** — this is the `stream.py` you asked for, `scripts/ask_stream.py`:
+Note `docs/API_CONTRACT.md` for the streaming NDJSON event contract, and that only `prompt`
+and `survey_id` are required over HTTP — client/org are derived server-side from the survey.
 
-```bash
-python scripts/ask_stream.py "Rank the products by overall liking" \
-  --survey-id 6263cf71-23b7-4462-9ccf-4a00a7267672
+---
 
-python scripts/ask_stream.py --health
-FLAVORAI_API=https://your-tunnel.ngrok-free.dev python scripts/ask_stream.py "..."
+## 5. Repository layout
+
 ```
+funda_agent_exp.py            the agent: graph, state, tools, scope, DB, CLI
+api_funda_agent_exp.py        FastAPI / NDJSON streaming entry point
+agent_instructions.py         system prompt + every behavioural rule block
+tool_prompts.py               tool descriptions + tool-returned feedback text
+plsr.py · clustering.py       dependency-free numeric engines (numpy only)
 
-Only `prompt` and `survey_id` are required — `client_id` and `organization_id` are derived
-server-side from the survey (`docs/API_CONTRACT.md` §4, and §14.4 of `docs/agent_exp_doc.md`).
-
-## regression.xlsx — the test cases that found the bugs
-
-The prompts that actually surfaced defects lived scattered across six scripts and two markdown
-files, so there was no single list. They are now all in the spreadsheet, in two appended columns
-**Suite** and **Case**:
-
-| Suite | rows | what it catches |
-|---|--:|---|
-| *(blank — the original 33)* | 33 | the pre-existing regression set |
-| Needle in haystack | 9 | picking the question that *means* "overall liking", and refusing when none exists (T4/T5 are absence cases) |
-| Large SQL output | 8 | payloads that park and fire a condenser — E1–E4 and the condenser-A/B set L1–L4 |
-| Routing-removal history | 3 | historical strong→weak/lean cases retained as regression inputs |
-| Suggestions / ambiguity | 4 | the `{{...}}` button contract, and when buttons must *not* appear |
-| Short-term memory | 12 | one 12-round conversation on a single `thread_id`, in order |
-| Optimal SQL edge cases | 4 | SQL planning and retrieval edge cases |
-| Inventory lifecycle + external packet | 4 | cache lifecycle and authorized packet retrieval |
-| Demographic linkage edge cases | 1 | demographic-answer linkage |
-| Persona reference | 3 | evidence-grounded persona/profile behavior |
-| Feature influence reference | 3 | adjusted feature-influence analysis |
-| Nested result rows | 2 | complete nested result presentation |
-| Client-wide survey boundary | 2 | cross-survey authorization boundaries |
-| Unclear intent handling | 2 | clarification behavior |
-
-Regenerate or extend with `scripts/add_debug_cases_to_regression.py` (idempotent; `--dry-run`
-to preview). Three things to know before using them:
-
-- **`run_regression_exp.sh` still sweeps `seq 1 18`.** The appended rows do not change what the
-  existing regression run does — widen the seq, or target one with
-  `bench_regression_exp.py --row N`.
-- **This workbook is not the parent repo's `regression.xlsx`.** The parent copy is sheet `Sheet1`,
-  18 populated rows across 27 columns (it carries scoring columns and ~968 trailing blank
-  formatted rows). This one is sheet `regression_cleaned`, 9 columns, and its 33 original rows
-  are a strict **superset** of the repo's 18 — nothing was lost, and `seq 1 18` covers only the
-  first 18 of 90 here.
-- **The `Type of Query` column carries the expectation**, not just a label: which rows must
-  refuse, what the payload size should be, historical routing expectations, and historical
-  behavior notes (including the former stats-only latch behavior).
-- **The 12 memory rows are one conversation**, not 12 independent prompts. Running them
-  standalone tests nothing about memory.
-
-`bench_regression_exp.py::load_rows` reads by column *position*, so Suite and Case were appended
-at H and I where it ignores them. Verified: it still parses all rows and rows 1–18 are unchanged.
-
-## Deliberately not copied
-
-Four scripts were left behind because they benchmark **`funda_agent_exp` against its sibling
-agents** and need files outside this bundle — copying them would have shipped scripts that
-cannot run:
-
-| script | needs |
-|---|---|
-| `bench_needle.py` | `funda_agent_v1.py` |
-| `run_needle_bench.sh` | `funda_agent_v1.py` |
-| `run_drill_ablation.sh` | `funda_agent.py` (via `bench_needle.py`) |
-| `summarize_drill_ablation.py` | output of the above |
-
-`docs/agent_exp_doc.md` §13 still lists them. Their results are already written up in
-`docs/emp_findings.md` and `docs/needle_haystack_benchmark.md`, so nothing is lost but the
-ability to re-run those two cross-agent comparisons here.
-
-`funda_agent_exp_oracle_duo.py` **is** included — it is the baseline arm the memory benchmarks
-A/B against, so `scripts/run_memory_bench*.sh` need it. Keep it byte-identical.
-
-## Where to start reading
-
-`docs/agent_exp_doc.md` is the main document. §3 is the architecture, §5 the tools (§5.4 covers
-how computation is pushed into Postgres so the model reads statistics rather than rows), §7 result
-parking and the two condensers, §12 known limitations. For frontend work, `docs/API_CONTRACT.md`
-plus `openapi.json`.
+PROTOCOL.md                   the governing workflow: components, step 0–6 patch
+                              procedure, sync contract (read this first)
+docs/agent_exp_doc.md         architecture reference — prompts, tools, guardrails
+docs/API_CONTRACT.md          frontend integration contract
+docs/generated/               agent-prompt-map.{md,json} — generated instruction inventory
+skills/                       oracle_agent · trace_compare · contract_review ·
+                              agent-prompt-mapper (Claude Code procedures + scripts)
+tests/                        offline unit tests (unittest, not pytest)
+regression.xlsx               Suite/Case-indexed probe rows for step 3
+probe_scratchpad.md           case records: hypotheses, probes, verdicts, exceptions
+LLM_FLOW.md · CONTROL_FLOW.md output-ownership recipes (who produces / authorizes /
+                              enforces each piece of output)
+deployment/                   the deployable mirror — never touched before approval
+```
